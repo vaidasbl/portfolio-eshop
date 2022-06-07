@@ -1,0 +1,150 @@
+* {
+  font-family: "Futura";
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.black-container {
+  background-color: rgba(0, 0, 0, 0.92);
+  position: flex;
+  height: min-content;
+
+  width: 100%;
+}
+
+.black-container-home {
+  background-color: rgba(0, 0, 0, 0.92);
+  position: absolute;
+  height: 100%;
+
+  width: 100%;
+}
+
+.greeting {
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  user-select: none;
+
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  margin-left: -300px;
+  margin-top: -300px;
+}
+
+.greeting-nav-item:hover {
+  cursor: pointer;
+  color: rgba(255, 255, 255);
+  font-size: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.92);
+
+  transition: border 2s ease;
+}
+
+.greeting-nav-item {
+  border-bottom: 1px solid rgba(20, 20, 20, 0.92);
+  font-size: 20px;
+
+  transition: border 0.7s ease;
+}
+
+.fsize60 {
+  font-size: 60px;
+}
+
+.fsize35 {
+  font-size: 25px;
+}
+
+.navcontainer {
+  padding-top: 2em;
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.shopheader {
+  background-color: rgba(0, 0, 0, 0.86);
+  color: rgba(255, 255, 255, 0.9);
+  height: 4em;
+}
+
+.shopnav {
+  padding-left: 3em;
+  padding-top: 1em;
+  justify-content: space-between;
+  width: 20%;
+}
+
+.shopnav-item:hover {
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid white;
+  padding-bottom: 18px;
+  transition: border 2s ease;
+}
+
+.shopnav-item {
+  border-bottom: 1px solid rgb(36, 35, 35);
+  padding-bottom: 18px;
+  transition: border 1s ease;
+}
+
+.txtblack {
+  color: rgba(0, 0, 0, 0.92);
+}
+
+.item-card-container {
+  background-color: rgb(58, 58, 58);
+  margin-top: 5em;
+
+  width: 35em;
+  height: 35em;
+}
+
+.item-card-image-container {
+  display: flex;
+  padding-top: 1em;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.item-card-title {
+  justify-content: space-between;
+}
+
+.card-price {
+  display: flex;
+  justify-content: end;
+}
+
+.card-name {
+}
+
+.itemimg {
+  width: 34em;
+  height: 30em;
+  opacity: 0.25;
+}
+
+.items-list-container {
+  padding-left: 3em;
+  padding-right: 3em;
+  padding-bottom: 3em;
+}
+
+.ouritems {
+  text-align: center;
+  font-size: 40px;
+}
+
+.center {
+  text-align: center;
+}
+
+.tableheader {
+  margin-bottom: 3em;
+}
