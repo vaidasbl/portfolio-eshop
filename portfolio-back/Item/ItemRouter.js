@@ -100,11 +100,18 @@ router.put("/:id", async (req, res, next) => {
     const itemToUpdate = await Item.findById(itemId);
     const updatedData = req.body;
     const options = { new: true };
+    console.log(typeof req.body.itemPrice);
+
+    if (typeof req.body.itemPrice !== "number") {
+      res.status(400).send("price has to be a number");
+      return;
+    }
 
     if (itemToUpdate === null) {
       res.status(218).send("No item with such id.");
       return;
     }
+
     const result = await Item.findByIdAndUpdate(
       { _id: itemId },
       updatedData,

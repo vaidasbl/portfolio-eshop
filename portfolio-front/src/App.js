@@ -17,7 +17,6 @@ function App() {
   const fetchItems = async () => {
     const response = await axios.get("http://localhost:3001/api/shop/items");
     setItems(response.data);
-    console.log(response.data);
   };
 
   useEffect(() => {
@@ -34,7 +33,10 @@ function App() {
           path="/eshop/items/:id"
           element={<ItemDetails items={items} />}
         />
-        <Route path="/eshop/admin" element={<ItemAdmin items={items} />} />
+        <Route
+          path="/eshop/admin"
+          element={<ItemAdmin fetchItems={fetchItems} items={items} />}
+        />
       </Routes>
 
       <div className="App"></div>

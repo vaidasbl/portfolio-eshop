@@ -148,3 +148,34 @@
 .tableheader {
   margin-bottom: 3em;
 }
+
+.editForm {
+  background-color: rgba(0, 0, 0, 0.651);
+
+  color: white;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.514);
+  border-radius: 5px;
+}
+
+.editFormRow {
+  height: 5em;
+  text-align: center;
+}
+
+.editFormRow:hover {
+  background-color: rgba(255, 255, 255, 0.041);
+  cursor: pointer;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.btn-primary {
+  width: 10vh;
+}
+
+.justifyBetween {
+  justify-content: space-between;
+}
