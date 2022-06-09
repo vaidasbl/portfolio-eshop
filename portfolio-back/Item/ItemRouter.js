@@ -43,6 +43,29 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+//Get filter by name
+router.get("/search/:namestring", async (req, res, next) => {
+  const regex = req.params.namestring;
+
+  try {
+    const items = await Item.find({
+      itemName: new RegExp(`.*${regex}.*`, "i"),
+    });
+    res.send(items);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
+router.get("/search/", async (req, res, next) => {
+  try {
+    const items = await Item.find();
+    res.send(items);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
 //Get one by id
 router.get("/:id", async (req, res, next) => {
   const itemId = req.params.id;

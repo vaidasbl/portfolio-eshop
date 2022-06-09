@@ -1,15 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ShopNav from "./ShopNav";
 
-export default function ItemAdmin({ items, fetchItems }) {
+export default function ItemAdmin({ items, setItems, fetchItems }) {
+  const navigate = useNavigate();
   const [itemData, setItemData] = useState({
     itemName: "",
     itemDescription: "",
     itemPrice: 0,
     imagePath: "",
   });
+
+  const [searchString, setSearchString] = useState("");
 
   const [edit, setEdit] = useState({
     inEditMode: false,
@@ -75,12 +79,45 @@ export default function ItemAdmin({ items, fetchItems }) {
     });
   };
 
+  const handleSearch = async (e) => {
+    setSearchString(e.target.value);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/shop/items/search/${e.target.value}`
+      );
+      console.log(response.data);
+      setItems(response.data);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
   return (
     <div>
       <ShopNav />
 
       <div className="black-container-home items-list-container">
-        <div className="row p-4 center tableheader">
+        <div className="row ">
+          <div className="col-sm-4 pt-4">
+            <button
+              onClick={() => navigate("/eshop/items/addform")}
+              className="myBtn"
+            >
+              Add new item
+            </button>
+          </div>
+          <div className="col-sm-8 pt-4 justify-start ">
+            <input
+              type="text"
+              className="searchField"
+              placeholder="Filter by item name..."
+              onChange={(e) => handleSearch(e)}
+              value={searchString}
+            ></input>
+          </div>
+        </div>
+
+        <div className="row pb-4 pt-10 center tableheader">
           <div className="col-sm-2">ITEM NAME</div>
           <div className="col-sm-2">ITEM DESCRIPTION</div>
           <div className="col-sm-2">ITEM PRICE</div>
@@ -132,13 +169,13 @@ export default function ItemAdmin({ items, fetchItems }) {
                 </div>
                 <div className="col-sm-2 alignRight">
                   <button
-                    className="btn btn-primary me-1"
+                    className="myBtn3 me-1"
                     onClick={() => handleSave(item)}
                   >
                     Save
                   </button>
                   <button
-                    className="btn btn-outline-primary"
+                    className="myBtn3"
                     onClick={() =>
                       setEdit({
                         inEditMode: false,
@@ -171,6 +208,9 @@ export default function ItemAdmin({ items, fetchItems }) {
             )}
           </div>
         ))}
+        <div className="row">
+          <hr />
+        </div>
       </div>
     </div>
   );

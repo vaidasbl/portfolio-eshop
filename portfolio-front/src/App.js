@@ -10,6 +10,7 @@ import ItemCard from "./components/ItemCard";
 import axios from "axios";
 import ItemDetails from "./components/ItemDetails";
 import ItemAdmin from "./components/ItemAdmin";
+import AdminnAddNewItem from "./components/AdminAddNewItem";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -35,7 +36,18 @@ function App() {
         />
         <Route
           path="/eshop/admin"
-          element={<ItemAdmin fetchItems={fetchItems} items={items} />}
+          element={
+            <ItemAdmin
+              fetchItems={fetchItems}
+              items={items}
+              setItems={setItems}
+            />
+          }
+        />
+
+        <Route
+          path="/eshop/items/addform"
+          element={<AdminnAddNewItem fetchItems={fetchItems} />}
         />
       </Routes>
 

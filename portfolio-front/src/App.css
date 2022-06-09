@@ -54,7 +54,11 @@
 }
 
 .fsize35 {
-  font-size: 25px;
+  font-size: 35px;
+}
+
+.fsize20 {
+  font-size: 20px;
 }
 
 .navcontainer {
@@ -151,7 +155,7 @@
 
 .editForm {
   background-color: rgba(0, 0, 0, 0.651);
-
+  height: 4vh;
   color: white;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.514);
@@ -161,6 +165,7 @@
 .editFormRow {
   height: 5em;
   text-align: center;
+  padding-bottom: 1.5vh;
 }
 
 .editFormRow:hover {
@@ -178,4 +183,89 @@
 
 .justifyBetween {
   justify-content: space-between;
+}
+
+.myBtn {
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  width: 20vh;
+  height: 5vh;
+}
+
+.myBtn:hover {
+  background-color: rgb(31, 31, 31);
+}
+
+.myBtn2 {
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  width: 10vh;
+  height: 5vh;
+}
+
+.myBtn2:hover {
+  background-color: rgb(31, 31, 31);
+}
+
+.myBtn3 {
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  width: 7vh;
+  height: 4vh;
+}
+
+.myBtn3:hover {
+  background-color: rgb(31, 31, 31);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+
+  color: #c0c0c0;
+  background-color: #7e7d7d5d;
+  border: 1px solid rgb(87, 87, 87);
+}
+
+.adminButtonsRow {
+  display: flex;
+  justify-content: end;
+  border: red 1px solid;
+}
+
+.searchField {
+  background-color: black;
+  border: white 1px solid;
+  border-radius: 5px;
+  color: white;
+  width: 50vh;
+}
+
+.justify-start {
+  display: flex;
+  justify-content: start;
+}
+
+.justify-end {
+  display: flex;
+  justify-content: end;
+}
+
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.pt-10 {
+  padding-top: 10vh;
+}
+
+.redborder {
+  border: 2px solid red;
 }
