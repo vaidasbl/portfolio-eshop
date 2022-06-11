@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const ObjectId = require("mongoose").ObjectId;
 
 const itemSchema = new mongoose.Schema({
-  itemName: String,
+  itemName: { type: String, required: true },
   itemDescription: String,
   itemPrice: Number,
+  stock: Number,
   imagePath: String,
 });
 

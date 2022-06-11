@@ -12,18 +12,21 @@ export default function ItemDetails({ items }) {
       <ShopNav />
 
       <div className="black-container-home items-list-container">
-        {items
-          .filter((item) => item._id === id)
-          .map((i) => (
-            <div>
-              <div className="ouritems">{i.itemName}</div>
-              <ItemCard
-                name={i.itemName}
-                price={i.itemPrice}
-                image={i.imagePath}
-              />
-            </div>
-          ))}
+        <div className="row mt-4">
+          <div className="col-lg-4">
+            {items
+              .filter((item) => item._id === id)
+              .map((i) => (
+                <div>
+                  <ItemCard
+                    name={i.itemName}
+                    price={i.itemPrice}
+                    image={i.imagePath}
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );

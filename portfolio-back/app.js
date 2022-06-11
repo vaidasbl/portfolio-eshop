@@ -4,8 +4,10 @@ const cors = require("cors");
 const app = express();
 
 const itemRouter = require("./Item/ItemRouter");
+const cartItemRouter = require("./CartItem/CartItemRouter");
 
 app.use("/api/shop/items", itemRouter);
+app.use("/api/shop/cartitems", cartItemRouter);
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));

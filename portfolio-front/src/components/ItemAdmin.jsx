@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ItemSearch from "./ItemSearch";
 
 import ShopNav from "./ShopNav";
 
@@ -11,9 +12,8 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
     itemDescription: "",
     itemPrice: 0,
     imagePath: "",
+    stock: 0,
   });
-
-  const [searchString, setSearchString] = useState("");
 
   const [edit, setEdit] = useState({
     inEditMode: false,
@@ -58,6 +58,7 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
       itemDescription: item.itemDescription,
       itemPrice: item.itemPrice,
       imagePath: item.imagePath,
+      stock: item.stock,
     });
   };
 
@@ -79,19 +80,6 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
     });
   };
 
-  const handleSearch = async (e) => {
-    setSearchString(e.target.value);
-
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/api/shop/items/search/${e.target.value}`
-      );
-      console.log(response.data);
-      setItems(response.data);
-    } catch (err) {
-      alert(err.message);
-    }
-  };
   return (
     <div>
       <ShopNav />
@@ -106,14 +94,8 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
               Add new item
             </button>
           </div>
-          <div className="col-sm-8 pt-4 justify-start ">
-            <input
-              type="text"
-              className="searchField"
-              placeholder="Filter by item name..."
-              onChange={(e) => handleSearch(e)}
-              value={searchString}
-            ></input>
+          <div className="col-sm-8 pt-4 ">
+            <ItemSearch setItems={setItems} />
           </div>
         </div>
 
@@ -122,7 +104,7 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
           <div className="col-sm-2">ITEM DESCRIPTION</div>
           <div className="col-sm-2">ITEM PRICE</div>
           <div className="col-sm-2">IMAGE PATH</div>
-          <div className="col-sm-2"></div>
+          <div className="col-sm-2">STOCK</div>
           <div className="col-sm-2"></div>
         </div>
 
@@ -135,16 +117,16 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
                   <input
                     name="itemName"
                     type="text"
-                    className="editForm"
+                    className="editForm inputBoxOutline"
                     onChange={(e) => handleChange(e)}
                     defaultValue={item.itemName}
                   ></input>
                 </div>
                 <div className="col-sm-2">
                   <input
-                    name="itemDescription"
+                    name="itemDescription   "
                     type="text"
-                    className="editForm"
+                    className="editForm inputBoxOutline"
                     onChange={(e) => handleChange(e)}
                     defaultValue={item.itemDescription}
                   ></input>
@@ -153,7 +135,7 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
                   <input
                     name="itemPrice"
                     type="text"
-                    className="editForm"
+                    className="editForm inputBoxOutline"
                     onChange={(e) => handleChange(e)}
                     defaultValue={item.itemPrice}
                   ></input>
@@ -162,9 +144,18 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
                   <input
                     name="imagePath"
                     type="text"
-                    className="editForm"
+                    className="editForm inputBoxOutline"
                     onChange={(e) => handleChange(e)}
                     defaultValue={item.imagePath}
+                  ></input>
+                </div>
+                <div className="col-sm-2">
+                  <input
+                    name="stock"
+                    type="text"
+                    className="editForm inputBoxOutline"
+                    onChange={(e) => handleChange(e)}
+                    defaultValue={item.stock}
                   ></input>
                 </div>
                 <div className="col-sm-2 alignRight">
@@ -184,11 +175,9 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
                   >
                     Cancel
                   </button>
-                </div>
-                <div className="col-sm-2 ">
                   <button
                     onClick={() => handleDelete(item)}
-                    className="btn btn-danger"
+                    className="myBtn-red"
                   >
                     Delete
                   </button>
@@ -201,7 +190,7 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
                 <div className="col-sm-2">{item.itemDescription}</div>
                 <div className="col-sm-2">{item.itemPrice}</div>
                 <div className="col-sm-2">{item.imagePath}</div>
-                <div className="col-sm-2"></div>
+                <div className="col-sm-2">{item.stock}</div>
 
                 <div className="col-sm-2 "></div>
               </div>

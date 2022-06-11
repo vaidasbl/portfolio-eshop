@@ -123,7 +123,6 @@ router.put("/:id", async (req, res, next) => {
     const itemToUpdate = await Item.findById(itemId);
     const updatedData = req.body;
     const options = { new: true };
-    console.log(typeof req.body.itemPrice);
 
     if (typeof req.body.itemPrice !== "number") {
       res.status(400).send("price has to be a number");
@@ -135,11 +134,17 @@ router.put("/:id", async (req, res, next) => {
       return;
     }
 
+    if (req.body === "") {
+      res.status(400).send("cannot be empty");
+      return;
+    }
+
     const result = await Item.findByIdAndUpdate(
       { _id: itemId },
       updatedData,
       options
     );
+    console.log(req.body);
     res.send(result);
   } catch (err) {
     res.send(err.message);

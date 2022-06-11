@@ -102,10 +102,7 @@
 
 .item-card-container {
   background-color: rgb(58, 58, 58);
-  margin-top: 5em;
-
-  width: 35em;
-  height: 35em;
+  margin: 2vh;
 }
 
 .item-card-image-container {
@@ -143,6 +140,7 @@
 .ouritems {
   text-align: center;
   font-size: 40px;
+  margin-bottom: 8vh;
 }
 
 .center {
@@ -224,6 +222,19 @@
   background-color: rgb(31, 31, 31);
 }
 
+.myBtn-red {
+  background-color: rgba(255, 0, 0, 0.5);
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  width: 7vh;
+  height: 4vh;
+}
+
+.myBtn4:hover {
+  background-color: rgba(255, 0, 0, 0.61);
+}
+
 button:disabled {
   cursor: not-allowed;
   pointer-events: none;
@@ -245,6 +256,7 @@ button:disabled {
   border-radius: 5px;
   color: white;
   width: 50vh;
+  height: 5vh;
 }
 
 .justify-start {
@@ -268,4 +280,13 @@ button:disabled {
 
 .redborder {
   border: 2px solid red;
+}
+
+.pointercursor:hover {
+  cursor: pointer;
+}
+
+.inputBoxOutline:focus {
+  outline: none;
+  border: 3px solid white;
 }
