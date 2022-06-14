@@ -1,24 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const { CartItem } = require("./CartItem");
+const { Cart } = require("./Cart");
 
 const cors = require("cors");
+const CartItem = require("../CartItem/CartItem");
 
 router.use(express.json());
 router.use(cors({ origin: "*" }));
 
-//Add new cart item
+//Create cart
 router.post("/", async (req, res) => {
-  const cartItem = new CartItem({
-    item: req.body.itemId,
-  });
+  const cart = new Cart();
 
-  console.log(cartItem);
   try {
-    const itemToSave = await cartItem.save();
-    res.send(itemToSave);
+    const cartToSave = await cart.save();
+    res.send(cartToSave);
   } catch (err) {
-    res.send(err.message);
+    res.send("ERROR");
   }
 });
 

@@ -1,7 +1,10 @@
 const express = require("express");
 const { Item } = require("./Item");
+const { Cart } = require("../Cart/Cart");
 const router = express.Router();
 const cors = require("cors");
+const mongoose = require("mongoose");
+const { CartItem } = require("../CartItem/CartItem");
 router.use(express.json());
 router.use(cors({ origin: "*" }));
 
@@ -34,7 +37,7 @@ router.get("/", async (req, res, next) => {
   try {
     const items = await Item.find();
     if (items.length === 0) {
-      res.status(218).send("there are no items");
+      res.status(218).send([]);
       return;
     }
     res.send(items);
@@ -146,6 +149,46 @@ router.put("/:id", async (req, res, next) => {
     );
     console.log(req.body);
     res.send(result);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
+//Add item to cart
+router.put("/:itemid/addtocart/:cartid", async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.itemid);
+    const cart = await Cart.findById(req.params.cartid);
+
+    const isItemInCart = await cart.items?.some(
+      (i) => i.itemId == req.params.itemid
+    );
+
+    if (!isItemInCart) {
+      const cartItem = new CartItem({
+        itemId: req.params.itemid,
+        itemName: item.itemName,
+        quantity: 1,
+        cartId: cart._id,
+      });
+
+      await cart.items.push(cartItem);
+      const response = await cart.save();
+      await cartItem.save();
+      res.send(response);
+    } else {
+      const cartItem = await CartItem.findOne({ cartId: cart._id });
+      const itemInCart = await cart.items.find(
+        (i) => i._id.str == cartItem._id.str
+      );
+
+      cartItem.quantity++;
+      itemInCart.quantity++;
+
+      await cartItem.save();
+      const response = await cart.save();
+      res.send(response);
+    }
   } catch (err) {
     res.send(err.message);
   }

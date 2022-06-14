@@ -18,6 +18,7 @@ function App() {
   const fetchItems = async () => {
     const response = await axios.get("http://localhost:3001/api/shop/items");
     setItems(response.data);
+    console.log(response.data);
   };
 
   useEffect(() => {
