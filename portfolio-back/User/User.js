@@ -5,7 +5,6 @@ const User = mongoose.model(
   new mongoose.Schema({
     username: String,
     password: String,
-    cart: String, // cartId
   })
 );
 

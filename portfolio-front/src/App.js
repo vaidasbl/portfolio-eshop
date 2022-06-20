@@ -11,6 +11,7 @@ import ItemDetails from "./components/ItemDetails";
 import ItemAdmin from "./components/ItemAdmin";
 import AdminnAddNewItem from "./components/AdminAddNewItem";
 import Cart from "./components/Cart";
+import Login from "./components/Login";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -55,6 +56,7 @@ function App() {
         />
 
         <Route path="/eshop/cart" element={<Cart />} />
+        <Route path="/eshop/login" element={<Login />} />
       </Routes>
 
       <div className="App"></div>

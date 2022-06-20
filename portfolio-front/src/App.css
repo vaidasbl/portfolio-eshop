@@ -15,7 +15,6 @@
   background-color: rgba(0, 0, 0, 0.92);
   position: absolute;
   height: 100%;
-
   width: 100%;
 }
 
@@ -75,10 +74,10 @@
 }
 
 .shopnav {
-  padding-left: 3em;
+  margin-left: 3em;
   padding-top: 1em;
   justify-content: space-between;
-  width: 20%;
+  text-align: center;
 }
 
 .shopnav-item:hover {
@@ -267,11 +266,17 @@ button:disabled {
 .justify-end {
   display: flex;
   justify-content: end;
+  margin-bottom: 2vh;
+  margin-right: 5vh;
 }
 
 .justify-center {
   display: flex;
   justify-content: center;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .pt-10 {
@@ -284,6 +289,10 @@ button:disabled {
 
 .pointercursor:hover {
   cursor: pointer;
+}
+
+.highlight:hover {
+  color: white;
 }
 
 .inputBoxOutline:focus {
