@@ -5,6 +5,7 @@ const router = express.Router();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { CartItem } = require("../CartItem/CartItem");
+const { User } = require("../User/User");
 router.use(express.json());
 router.use(cors({ origin: "*" }));
 
@@ -155,39 +156,58 @@ router.put("/:id", async (req, res, next) => {
 });
 
 //Add item to cart
-router.put("/:itemid/addtocart/:cartid", async (req, res) => {
+router.put("/:itemid/addtouser/:userid", async (req, res) => {
   try {
     const item = await Item.findById(req.params.itemid);
-    const cart = await Cart.findById(req.params.cartid);
+    const cart = await Cart.findOne({ userId: req.params.userid });
 
-    const isItemInCart = await cart.items?.some(
+    const ItemInCart = await cart.items.find(
       (i) => i.itemId == req.params.itemid
     );
 
-    if (!isItemInCart) {
-      const cartItem = new CartItem({
-        itemId: req.params.itemid,
+    if (!ItemInCart) {
+      await cart.items.push({
+        itemId: item._id,
         itemName: item.itemName,
         quantity: 1,
-        cartId: cart._id,
       });
 
-      await cart.items.push(cartItem);
-      const response = await cart.save();
-      await cartItem.save();
-      res.send(response);
+      const result = await cart.save();
+      res.send(result);
     } else {
-      const cartItem = await CartItem.findOne({ cartId: cart._id });
-      const itemInCart = await cart.items.find(
-        (i) => i._id.str == cartItem._id.str
+      ItemInCart.quantity++;
+      const result = await cart.save();
+      res.send(result);
+    }
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
+router.put("/:itemid/removefromuser/:userid", async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.itemid);
+    const cart = await Cart.findOne({ userId: req.params.userid });
+
+    const ItemInCart = await cart.items.find(
+      (i) => i.itemId == req.params.itemid
+    );
+
+    if (!ItemInCart) {
+      res.status(222).send("the item is not in the cart");
+    } else if (ItemInCart.quantity > 1) {
+      ItemInCart.quantity--;
+      const result = await cart.save();
+      res.send(result);
+    } else if (ItemInCart.quantity == 1) {
+      const index = await cart.items.findIndex(
+        (i) => i.itemId == ItemInCart.itemId
       );
 
-      cartItem.quantity++;
-      itemInCart.quantity++;
+      await cart.items.splice(index, 1);
 
-      await cartItem.save();
-      const response = await cart.save();
-      res.send(response);
+      const result = await cart.save();
+      res.send(result);
     }
   } catch (err) {
     res.send(err.message);

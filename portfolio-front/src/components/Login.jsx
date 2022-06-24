@@ -1,10 +1,16 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import ShopNav from "./ShopNav";
+import { UserContext } from "./UserContext";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { dispatch } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const field = e.target.id;
@@ -31,8 +37,11 @@ function Login() {
       loginJson
     );
 
-    if (result.data) {
+    if (result.data.success) {
       console.log("logged in");
+      await dispatch({ type: "LOGIN", payload: result.data });
+      navigate("/eshop");
+      alert("successful login");
     } else {
       console.log("failed login");
     }
@@ -41,7 +50,6 @@ function Login() {
   return (
     <div>
       <ShopNav />
-
       <div className="black-container-home items-list-container ">
         <div className="greeting ">
           <div>
@@ -69,7 +77,7 @@ function Login() {
           </div>
 
           <div className="mt-3">
-            <button onClick={() => handleLogin()} className="myBtn ">
+            <button onClick={handleLogin} className="myBtn ">
               Login
             </button>
           </div>

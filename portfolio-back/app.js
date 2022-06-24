@@ -14,7 +14,6 @@ app.use("/api/shop/carts", cartRouter);
 app.use("/api/shop/users", userRouter);
 
 app.use(express.json());
-app.use(cors({ origin: "*" }));
 
 const run = () => {
   const port = process.env.PORT || 3001;

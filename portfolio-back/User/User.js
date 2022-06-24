@@ -5,6 +5,8 @@ const User = mongoose.model(
   new mongoose.Schema({
     username: String,
     password: String,
+    role: String,
+    cartId: { type: mongoose.Schema.Types.ObjectId, ref: "Cart" },
   })
 );
 

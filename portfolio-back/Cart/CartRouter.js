@@ -3,12 +3,10 @@ const router = express.Router();
 const { Cart } = require("./Cart");
 
 const cors = require("cors");
-const CartItem = require("../CartItem/CartItem");
 
 router.use(express.json());
 router.use(cors({ origin: "*" }));
 
-//Create cart
 router.post("/", async (req, res) => {
   const cart = new Cart();
 
@@ -20,4 +18,12 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/get/:userid", async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ userId: req.params.userid });
+    res.send(cart);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
 module.exports = router;

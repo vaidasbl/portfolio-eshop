@@ -16,7 +16,7 @@ export default function ShopItems({ items, setItems }) {
     <div>
       <ShopNav />
 
-      <div className="black-container items-list-container">
+      <div className="black-container-home items-list-container">
         <div className="ouritems">OUR ITEMS</div>
         <div className="row ">
           <div className="ms-4 mb-4">
