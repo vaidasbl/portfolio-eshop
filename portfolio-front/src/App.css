@@ -274,9 +274,19 @@ button:disabled {
   display: flex;
   justify-content: center;
 }
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+}
 
 .text-align-center {
   text-align: center;
+}
+
+.centerVertical {
+  text-align: center;
+  padding-top: 20vh;
+  margin-bottom: 2vh;
 }
 
 .pt-10 {
@@ -298,4 +308,13 @@ button:disabled {
 .inputBoxOutline:focus {
   outline: none;
   border: 3px solid white;
+}
+
+.mt-30vh {
+  position: relative;
+  margin-top: 30vh;
+}
+
+.mt-10vh {
+  padding-top: 10vh;
 }

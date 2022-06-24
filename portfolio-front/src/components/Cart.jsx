@@ -53,19 +53,21 @@ function Cart() {
       <ShopNav />
 
       <div className="black-container-home items-list-container">
+        <div className="ouritems">{user.username.toUpperCase()} ITEMS</div>
         {cartItems?.map((i) => (
-          <div className="row mt-4">
+          <div key={i.itemId} className="row mt-4 ms-4 mb-4">
             <div className="col-sm-3">{i.itemName}</div>
             <div className="col-sm-3">{i.quantity}</div>
 
-            <div className="col-sm-2">
-              <button onClick={() => handleIncrement(i)} className="myBtn">
+            <div className="col-sm-3">
+              <button
+                onClick={() => handleIncrement(i)}
+                className="myBtn3 me-2"
+              >
                 +
               </button>
-            </div>
 
-            <div className="col-sm-2">
-              <button onClick={() => handleDecrement(i)} className="myBtn">
+              <button onClick={() => handleDecrement(i)} className="myBtn3">
                 -
               </button>
             </div>

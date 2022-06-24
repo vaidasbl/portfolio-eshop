@@ -171,13 +171,18 @@ router.put("/:itemid/addtouser/:userid", async (req, res) => {
         itemName: item.itemName,
         quantity: 1,
       });
-
+      item.stock--;
+      await item.save();
       const result = await cart.save();
       res.send(result);
-    } else {
+    } else if (item.stock > 0) {
       ItemInCart.quantity++;
+      item.stock--;
+      await item.save();
       const result = await cart.save();
       res.send(result);
+    } else if (item.stock == 0) {
+      res.send("out of stock");
     }
   } catch (err) {
     res.send(err.message);
@@ -197,6 +202,8 @@ router.put("/:itemid/removefromuser/:userid", async (req, res) => {
       res.status(222).send("the item is not in the cart");
     } else if (ItemInCart.quantity > 1) {
       ItemInCart.quantity--;
+      item.stock++;
+      await item.save();
       const result = await cart.save();
       res.send(result);
     } else if (ItemInCart.quantity == 1) {
@@ -205,6 +212,8 @@ router.put("/:itemid/removefromuser/:userid", async (req, res) => {
       );
 
       await cart.items.splice(index, 1);
+      item.stock++;
+      await item.save();
 
       const result = await cart.save();
       res.send(result);

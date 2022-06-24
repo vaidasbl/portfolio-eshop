@@ -7,7 +7,7 @@ function ShopHome() {
       <ShopNav />
       <div className="black-container-home">
         <div className="greeting fsize35">
-          This is a template of the eshop app
+          This is a template of an eshop app
         </div>
       </div>
     </div>

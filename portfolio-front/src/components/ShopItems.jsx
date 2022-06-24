@@ -7,10 +7,18 @@ import ShopNav from "./ShopNav";
 
 export default function ShopItems({ items, setItems }) {
   const navigate = useNavigate();
-
   const navToDetails = (id) => {
     navigate(`/eshop/items/${id}`);
   };
+
+  const fetchItems = async () => {
+    const response = await axios.get("http://localhost:3001/api/shop/items");
+    setItems(response.data);
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   return (
     <div>

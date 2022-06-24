@@ -75,7 +75,13 @@ function App() {
                 <Route path="/eshop" element={<ShopHome />} />
                 <Route
                   path="/eshop/items"
-                  element={<ShopItems items={items} setItems={setItems} />}
+                  element={
+                    <ShopItems
+                      fetchItems={fetchItems}
+                      items={items}
+                      setItems={setItems}
+                    />
+                  }
                 />
                 <Route
                   path="/eshop/items/:id"
@@ -118,7 +124,9 @@ function App() {
                 />
                 <Route
                   path="/eshop/items/:id"
-                  element={<ItemDetails items={items} />}
+                  element={
+                    <ItemDetails items={items} fetchItems={fetchItems} />
+                  }
                 />
                 <Route
                   path="/eshop/admin"
