@@ -37,10 +37,10 @@ export default function ShopNav() {
   };
 
   return (
-    <div className="shopheader">
-      <div className="row shopnav">
+    <div className="shopheader sticky">
+      <div className="row m-0 shopnav">
         <div className="col-sm-4">
-          <div className="row ">
+          <div className="row">
             <div
               className="col-sm-3 shopnav-item"
               id="shopnavhome"
@@ -86,14 +86,14 @@ export default function ShopNav() {
             </div>
           </div>
         ) : (
-          <div className="col-sm-4 justify-end">
-            <div className="row">
-              <div className="col-sm-8 pointercursor highlight">
+          <div className="col-sm-8 ">
+            <div className="row flex-end">
+              <div className="col-sm-3 pointercursor highlight ">
                 Logged in as: {user.username}
               </div>
               <div
                 onClick={handleLogout}
-                className="col-sm-4 pointercursor highlight"
+                className="col-sm-2 pointercursor highlight "
               >
                 Logout
               </div>

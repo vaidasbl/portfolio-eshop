@@ -19,6 +19,11 @@ const CartSchema = new Schema({
         type: Number,
         min: [1, "quantity cant be less than 1"],
       },
+
+      itemPrice: {
+        type: Number,
+        ref: "Item",
+      },
     },
   ],
 });

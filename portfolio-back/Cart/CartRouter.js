@@ -21,6 +21,7 @@ router.post("/", async (req, res) => {
 router.get("/get/:userid", async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.params.userid });
+    console.log(cart.items);
     res.send(cart);
   } catch (err) {
     res.send(err.message);

@@ -48,39 +48,36 @@ function Login() {
   };
 
   return (
-    <div>
-      <ShopNav />
-      <div className="black-container-home items-list-container ">
-        <div className="greeting ">
-          <div>
-            <h6 className="fsize35 pb-4 ">Login</h6>
-          </div>
+    <div className="black-container">
+      <div className="centerform">
+        <div>
+          <h6 className="fsize35 pb-4 ">Login</h6>
+        </div>
 
-          <div className="mt-3">
-            <label className="fsize20 mb-1">Username</label>
-            <input
-              className="form-control text-align-center"
-              type="text"
-              id="txtLoginUsername"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
+        <div className="mt-3">
+          <label className="fsize20 mb-1">Username</label>
+          <input
+            className="form-control text-align-center"
+            type="text"
+            id="txtLoginUsername"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
 
-          <div className="mt-3">
-            <label className="fsize20 mb-1">Password</label>
-            <input
-              className="form-control text-align-center"
-              type="text"
-              id="txtLoginPassword"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
+        <div className="mt-3">
+          <label className="fsize20 mb-1">Password</label>
+          <input
+            className="form-control text-align-center"
+            type="text"
+            id="txtLoginPassword"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
 
-          <div className="mt-3">
-            <button onClick={handleLogin} className="myBtn ">
-              Login
-            </button>
-          </div>
+        <div className="mt-3">
+          <button onClick={handleLogin} className="myBtn3 ">
+            Login
+          </button>
         </div>
       </div>
     </div>

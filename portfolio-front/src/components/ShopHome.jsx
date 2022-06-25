@@ -3,13 +3,8 @@ import ShopNav from "./ShopNav";
 
 function ShopHome() {
   return (
-    <div>
-      <ShopNav />
-      <div className="black-container-home">
-        <div className="greeting fsize35">
-          This is a template of an eshop app
-        </div>
-      </div>
+    <div className="black-container">
+      <div className="fsize35 greeting">This is a template of an eshop app</div>
     </div>
   );
 }

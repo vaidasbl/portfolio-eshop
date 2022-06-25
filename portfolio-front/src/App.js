@@ -18,6 +18,7 @@ import ItemAdmin from "./components/ItemAdmin";
 import AdminnAddNewItem from "./components/AdminAddNewItem";
 import Cart from "./components/Cart";
 import Login from "./components/Login";
+import ShopNav from "./components/ShopNav";
 
 function App() {
   let initUser = {
@@ -70,6 +71,7 @@ function App() {
         return (
           <UserContext.Provider value={{ user, dispatch }}>
             <Router>
+              <ShopNav />
               <Routes>
                 <Route path="/" element={<HomeHome />} />
                 <Route path="/eshop" element={<ShopHome />} />
@@ -115,6 +117,7 @@ function App() {
         return (
           <UserContext.Provider value={{ user, dispatch }}>
             <Router>
+              <ShopNav />
               <Routes>
                 <Route path="/" element={<HomeHome />} />
                 <Route path="/eshop" element={<ShopHome />} />
@@ -159,6 +162,7 @@ function App() {
     return (
       <UserContext.Provider value={{ user, dispatch }}>
         <Router>
+          <ShopNav />
           <Routes>
             <Route path="/eshop" element={<ShopHome />} />
             <Route path="/eshop/login" element={<Login />} />

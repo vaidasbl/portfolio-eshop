@@ -25,42 +25,38 @@ export default function ItemDetails({ items, fetchItems }) {
   };
 
   return (
-    <div>
-      <ShopNav />
-
-      <div className="black-container-home items-list-container mt-10vh">
-        {items
-          .filter((item) => item._id === id)
-          .map((i) => (
-            <div key={i._id} className="row">
-              <div className="col-sm-5">
-                <ItemCard
-                  name={i.itemName}
-                  price={i.itemPrice}
-                  image={i.imagePath}
-                />
-              </div>
-              <div className="col-sm-5 mt-3  centerVertical">
-                <div>{i.itemDescription}</div>
-                <div className=" mt-30vh">
-                  Items in warehouse: {i.stock ? i.stock : 0}
-                </div>
-              </div>
-              <div className="col-sm-5 justify-between">
-                <button
-                  onClick={() => handleAddToCart(i)}
-                  className="myBtn2 ms-3"
-                  disabled={i.stock > 0 ? false : true}
-                >
-                  add to cart
-                </button>
-                <button onClick={() => navigate(-1)} className="myBtn2 me-3">
-                  go back
-                </button>
+    <div className="black-container mt-10vh">
+      {items
+        .filter((item) => item._id === id)
+        .map((i) => (
+          <div key={i._id} className="row">
+            <div className="col-sm-5">
+              <ItemCard
+                name={i.itemName}
+                price={i.itemPrice}
+                image={i.imagePath}
+              />
+            </div>
+            <div className="col-sm-5 mt-3  centerVertical">
+              <div>{i.itemDescription}</div>
+              <div className=" mt-30vh">
+                Items in warehouse: {i.stock ? i.stock : 0}
               </div>
             </div>
-          ))}
-      </div>
+            <div className="col-sm-5 justify-between">
+              <button
+                onClick={() => handleAddToCart(i)}
+                className="myBtn2 ms-3"
+                disabled={i.stock > 0 ? false : true}
+              >
+                add to cart
+              </button>
+              <button onClick={() => navigate(-1)} className="myBtn2 me-3">
+                go back
+              </button>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }

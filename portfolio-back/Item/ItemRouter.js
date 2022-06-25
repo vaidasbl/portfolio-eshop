@@ -15,6 +15,7 @@ router.post("/", async (req, res, next) => {
     itemName: req.body.itemName,
     itemDescription: req.body.itemDescription,
     itemPrice: req.body.itemPrice,
+    stock: req.body.stock,
     imagePath: req.body.imagePath,
   });
 
@@ -170,6 +171,7 @@ router.put("/:itemid/addtouser/:userid", async (req, res) => {
         itemId: item._id,
         itemName: item.itemName,
         quantity: 1,
+        itemPrice: item.itemPrice,
       });
       item.stock--;
       await item.save();
@@ -189,6 +191,7 @@ router.put("/:itemid/addtouser/:userid", async (req, res) => {
   }
 });
 
+//Remove item from cart
 router.put("/:itemid/removefromuser/:userid", async (req, res) => {
   try {
     const item = await Item.findById(req.params.itemid);
