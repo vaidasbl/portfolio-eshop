@@ -14,7 +14,6 @@ function Cart() {
       `http://localhost:3001/api/shop/carts/get/${user._id}`
     );
     setCartItems(response.data.items);
-    console.log(cartItems);
   };
 
   const handleIncrement = async (i) => {

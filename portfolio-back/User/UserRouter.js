@@ -41,9 +41,16 @@ router.post("/login", async (req, res) => {
       $and: [{ username: req.body.username }, { password: req.body.password }],
     });
 
-    if (user === null) {
-      res.send({ success: false });
-      console.log(user);
+    if (
+      user === null &&
+      (req.body.username !== "" || req.body.password !== "")
+    ) {
+      res.status(404).send({ success: false, reason: "User not found" });
+    } else if (req.body.username === "") {
+      res.status(404).send({
+        success: false,
+        reason: "Username or password cannot be empty",
+      });
     } else {
       res.send({
         success: true,

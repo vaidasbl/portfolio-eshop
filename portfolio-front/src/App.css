@@ -5,7 +5,7 @@
 
 html,
 body {
-  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.92);
 }
 
 .row {
@@ -18,7 +18,7 @@ body {
   width: 100%;
 
   background-color: rgba(0, 0, 0, 0.92);
-  min-height: 100vh;
+  min-height: 92.5vh;
 }
 
 .greeting {
@@ -213,6 +213,8 @@ body {
   color: white;
   width: 10vh;
   height: 5vh;
+  min-height: 30px;
+  min-width: fit-content;
 }
 
 .myBtn2:hover {
@@ -347,4 +349,26 @@ button:disabled {
 
 .ps-4vh {
   padding-left: 10px;
+}
+
+.notification-passive {
+  position: absolute;
+  right: 5vh;
+  top: 10vh;
+  opacity: 0;
+  user-select: none;
+  transition: opacity 0.5s ease;
+}
+
+.notification-active {
+  position: absolute;
+  right: 5vh;
+  top: 10vh;
+  user-select: none;
+  transition: opacity 0.5s ease;
+}
+
+.hide {
+  opacity: 0;
+  user-select: none;
 }
