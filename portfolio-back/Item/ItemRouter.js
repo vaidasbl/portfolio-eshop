@@ -10,7 +10,7 @@ router.use(express.json());
 router.use(cors({ origin: "*" }));
 
 // Add new item
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
   const item = new Item({
     itemName: req.body.itemName,
     itemDescription: req.body.itemDescription,
@@ -35,7 +35,7 @@ router.post("/", async (req, res, next) => {
 });
 
 //Get all items
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   try {
     const items = await Item.find();
     if (items.length === 0) {
@@ -49,7 +49,7 @@ router.get("/", async (req, res, next) => {
 });
 
 //Get filter by name
-router.get("/search/:namestring", async (req, res, next) => {
+router.get("/search/:namestring", async (req, res) => {
   const regex = req.params.namestring;
 
   try {
@@ -62,7 +62,7 @@ router.get("/search/:namestring", async (req, res, next) => {
   }
 });
 
-router.get("/search/", async (req, res, next) => {
+router.get("/search/", async (req, res) => {
   try {
     const items = await Item.find();
     res.send(items);
@@ -72,7 +72,7 @@ router.get("/search/", async (req, res, next) => {
 });
 
 //Get one by id
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", async (req, res) => {
   const itemId = req.params.id;
   if (itemId.length !== 24) {
     res.status(218).send("No item with such id.");
@@ -94,7 +94,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 //Delete by id
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", async (req, res) => {
   const itemId = req.params.id;
   if (itemId.length !== 24) {
     res.status(218).send("No item with such id.");
@@ -107,8 +107,11 @@ router.delete("/:id", async (req, res, next) => {
     if (itemToDelete === null) {
       res.status(218).send("No item with such id.");
       return;
+    } else {
+      await Cart.find({ "items.itemId": req.params.id }).updateMany({
+        $pull: { items: { itemId: req.params.id } },
+      });
     }
-
     await Item.deleteOne({ _id: itemId });
     res.send("Item with name '" + itemToDelete.itemName + "' has been deleted");
   } catch (err) {
@@ -117,7 +120,7 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 //Update by id
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", async (req, res) => {
   const itemId = req.params.id;
   if (itemId.length !== 24) {
     res.status(218).send("No item with such id.");
