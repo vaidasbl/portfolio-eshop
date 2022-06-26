@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
-import ShopNav from "./ShopNav";
-
-export default function AdminnAddNewItem({ items, fetchItems }) {
+export default function AdminnAddNewItem({ fetchItems }) {
   const navigate = useNavigate();
+  const { handleAlert } = useContext(UserContext);
   const [itemData, setItemData] = useState({
     itemName: "",
     itemDescription: "",
@@ -68,9 +68,10 @@ export default function AdminnAddNewItem({ items, fetchItems }) {
     try {
       await axios.post("http://localhost:3001/api/shop/items", itemData);
       fetchItems();
+      handleAlert("success", "Successfully added new item", 1500);
       navigate("/eshop/admin");
     } catch (err) {
-      alert(err.message);
+      handleAlert("error", err.message, 5000);
     }
   };
 

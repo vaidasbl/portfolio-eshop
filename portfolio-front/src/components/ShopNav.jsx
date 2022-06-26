@@ -1,12 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 export default function ShopNav() {
-  const { user, dispatch } = useContext(UserContext);
-  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, dispatch, handleAlert } = useContext(UserContext);
+  const [active, setActive] = useState({
+    home: true,
+    items: false,
+    cart: false,
+    login: false,
+    admin: false,
+  });
 
+  const setBorder = () => {
+    if (location.pathname === "/eshop") {
+      setActive({ home: true });
+    } else if (
+      location.pathname === "/eshop/items" ||
+      location.pathname.includes("items/")
+    ) {
+      setActive({ items: true });
+    } else if (location.pathname === "/eshop/cart") {
+      setActive({ cart: true });
+    } else if (location.pathname === "/eshop/login") {
+      setActive({ login: true });
+    } else if (location.pathname.includes("admin")) {
+      setActive({ admin: true });
+    }
+  };
+
+  useEffect(() => {
+    setBorder();
+  }, [location.pathname]);
+
+  const navigate = useNavigate();
   const navPush = (e) => {
     let id = e.target.id;
 
@@ -33,7 +63,7 @@ export default function ShopNav() {
 
   const handleLogout = async () => {
     await dispatch({ type: "LOGOUT" });
-    alert("Successfully logged out");
+    handleAlert("info", "Sucessfully logged out", 1500);
   };
 
   return (
@@ -42,14 +72,22 @@ export default function ShopNav() {
         <div className="col-sm-4">
           <div className="row">
             <div
-              className="col-sm-3 shopnav-item"
+              className={
+                active.home
+                  ? "col-sm-3 shopnav-item-active"
+                  : "col-sm-3 shopnav-item"
+              }
               id="shopnavhome"
               onClick={(e) => navPush(e)}
             >
               HOME
             </div>
             <div
-              className="col-sm-3 shopnav-item"
+              className={
+                active.items
+                  ? "col-sm-3 shopnav-item-active"
+                  : "col-sm-3 shopnav-item"
+              }
               id="shopnavitems"
               onClick={(e) => navPush(e)}
             >
@@ -57,7 +95,11 @@ export default function ShopNav() {
             </div>
             {user.role === "ADMIN" ? (
               <div
-                className="col-sm-3 shopnav-item"
+                className={
+                  active.admin
+                    ? "col-sm-3 shopnav-item-active"
+                    : "col-sm-3 shopnav-item"
+                }
                 id="shopnavadmin"
                 onClick={(e) => navPush(e)}
               >
@@ -65,7 +107,11 @@ export default function ShopNav() {
               </div>
             ) : (
               <div
-                className="col-sm-3 shopnav-item"
+                className={
+                  active.cart
+                    ? "col-sm-3 shopnav-item-active"
+                    : "col-sm-3 shopnav-item"
+                }
                 id="shopnavcart"
                 onClick={(e) => navPush(e)}
               >
@@ -78,7 +124,11 @@ export default function ShopNav() {
         {!user.isAuthenticated ? (
           <div className="col-sm-4 justify-end">
             <div
-              className="col-sm-2 pointercursor highlight "
+              className={
+                active.login
+                  ? "col-sm-3 shopnav-item-active"
+                  : "col-sm-3 shopnav-item"
+              }
               id="shopnavlogin"
               onClick={(e) => navPush(e)}
             >

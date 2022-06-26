@@ -24,25 +24,28 @@ export default function GreetingNav() {
       navigate("/manager");
     }
   }, [theme]);
+
   return (
-    <div className="row navcontainer">
-      <div
-        className="col-sm-3 greeting-nav-item "
-        id="naveshop"
-        onClick={(e) => navPush(e)}
-      >
-        eshop
-      </div>
+    <div className="col-sm-6 greetingnavcontainer">
+      <div className="row">
+        <div
+          className="col-sm-4 greeting-nav-item "
+          id="naveshop"
+          onClick={(e) => navPush(e)}
+        >
+          eshop
+        </div>
 
-      <div
-        className="col-sm-3 greeting-nav-item "
-        id="navmanager"
-        onClick={(e) => navPush(e)}
-      >
-        manager
-      </div>
+        <div
+          className="col-sm-4 greeting-nav-item "
+          id="navmanager"
+          onClick={(e) => navPush(e)}
+        >
+          manager
+        </div>
 
-      <div className="col-sm-3 greeting-nav-item ">idk yet</div>
+        <div className="col-sm-4 greeting-nav-item ">idk yet</div>
+      </div>
     </div>
   );
 }

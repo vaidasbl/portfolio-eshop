@@ -19,8 +19,29 @@ import AdminnAddNewItem from "./components/AdminAddNewItem";
 import Cart from "./components/Cart";
 import Login from "./components/Login";
 import ShopNav from "./components/ShopNav";
+import MyAlert from "./components/MyAlert";
 
 function App() {
+  const [alert, setAlert] = useState({
+    active: false,
+    type: "success",
+    text: "",
+  });
+
+  const handleAlert = (type, text, time) => {
+    setAlert({ active: true, type: type, text: text });
+    setTimeout(
+      () =>
+        setAlert((prevState) => {
+          return {
+            ...prevState,
+            active: false,
+          };
+        }),
+      time
+    );
+  };
+
   let initUser = {
     isAuthenticated: null,
     _id: null,
@@ -58,7 +79,6 @@ function App() {
   const fetchItems = async () => {
     const response = await axios.get("http://localhost:3001/api/shop/items");
     setItems(response.data);
-    console.log(response.data);
   };
 
   useEffect(() => {
@@ -69,9 +89,10 @@ function App() {
     switch (user.role) {
       case "ADMIN":
         return (
-          <UserContext.Provider value={{ user, dispatch }}>
+          <UserContext.Provider value={{ user, dispatch, alert, handleAlert }}>
             <Router>
               <ShopNav />
+              <MyAlert />
               <Routes>
                 <Route path="/" element={<HomeHome />} />
                 <Route path="/eshop" element={<ShopHome />} />
@@ -101,7 +122,7 @@ function App() {
                 />
 
                 <Route
-                  path="/eshop/items/addform"
+                  path="/eshop/admin/addform"
                   element={<AdminnAddNewItem fetchItems={fetchItems} />}
                 />
 
@@ -115,11 +136,11 @@ function App() {
         );
       case "USER":
         return (
-          <UserContext.Provider value={{ user, dispatch }}>
+          <UserContext.Provider value={{ user, dispatch, alert, handleAlert }}>
             <Router>
+              <MyAlert />
               <ShopNav />
               <Routes>
-                <Route path="/" element={<HomeHome />} />
                 <Route path="/eshop" element={<ShopHome />} />
                 <Route
                   path="/eshop/items"
@@ -160,9 +181,10 @@ function App() {
     }
   } else {
     return (
-      <UserContext.Provider value={{ user, dispatch }}>
+      <UserContext.Provider value={{ user, dispatch, alert, handleAlert }}>
         <Router>
           <ShopNav />
+          <MyAlert />
           <Routes>
             <Route path="/eshop" element={<ShopHome />} />
             <Route path="/eshop/login" element={<Login />} />

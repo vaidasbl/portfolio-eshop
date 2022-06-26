@@ -49,6 +49,7 @@ body {
 .greeting-nav-item {
   border-bottom: 1px solid rgba(20, 20, 20, 0.92);
   font-size: 20px;
+  width: min-content;
 
   transition: border 0.7s ease;
 }
@@ -65,11 +66,9 @@ body {
   font-size: 20px;
 }
 
-.navcontainer {
-  padding-top: 2em;
-  align-items: center;
-
-  justify-content: space-between;
+.greetingnavcontainer {
+  text-align: center;
+  margin: 0 auto;
 }
 .sticky {
   position: sticky;
@@ -101,6 +100,12 @@ body {
 
 .shopnav-item {
   border-bottom: 1px solid rgb(36, 35, 35);
+  padding-bottom: 20px;
+  transition: border 1s ease;
+}
+
+.shopnav-item-active {
+  border-bottom: 1px solid white;
   padding-bottom: 20px;
   transition: border 1s ease;
 }
@@ -366,8 +371,17 @@ button:disabled {
   top: 10vh;
   user-select: none;
   transition: opacity 0.5s ease;
+  z-index: 1;
 }
 
+.notification {
+  font-size: 200px;
+  color: white;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+}
 .hide {
   opacity: 0;
   user-select: none;

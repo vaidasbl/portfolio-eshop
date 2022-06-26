@@ -1,5 +1,4 @@
 import Alert from "@mui/material/Alert";
-import Stack from "@mui/material/Stack";
 import axios from "axios";
 import React, { useState } from "react";
 import { useContext } from "react";
@@ -9,20 +8,18 @@ import { UserContext } from "./UserContext";
 
 export default function ItemDetails({ items, fetchItems }) {
   const navigate = useNavigate();
-  const [notification, setNotification] = useState(false);
   const { id } = useParams();
-  const { user } = useContext(UserContext);
+  const { user, handleAlert } = useContext(UserContext);
 
   const handleAddToCart = async (i) => {
     try {
       await axios.put(
         `http://localhost:3001/api/shop/items/${i._id}/addtouser/${user._id}`
       );
-      fetchItems();
-      setNotification(true);
-      setTimeout(() => setNotification(false), 750);
+      handleAlert("success", "Item added to the cart", 750);
+      await fetchItems();
     } catch (err) {
-      alert(err);
+      handleAlert("error", err.response.data, 750);
     }
   };
 
@@ -68,15 +65,6 @@ export default function ItemDetails({ items, fetchItems }) {
             )}
           </div>
         ))}
-      <div
-        className={
-          notification === true ? "notification-active" : "notification-passive"
-        }
-      >
-        <Alert severity="success" variant="outlined">
-          item successfully added
-        </Alert>
-      </div>
     </div>
   );
 }

@@ -40,17 +40,13 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({
       $and: [{ username: req.body.username }, { password: req.body.password }],
     });
-
-    if (
-      user === null &&
-      (req.body.username !== "" || req.body.password !== "")
-    ) {
-      res.status(404).send({ success: false, reason: "User not found" });
-    } else if (req.body.username === "") {
+    if (req.body.username === "" || req.body.password === "") {
       res.status(404).send({
         success: false,
         reason: "Username or password cannot be empty",
       });
+    } else if (user === null) {
+      res.status(404).send({ success: false, reason: "User not found" });
     } else {
       res.send({
         success: true,

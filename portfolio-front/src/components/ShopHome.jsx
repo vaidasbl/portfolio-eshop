@@ -1,5 +1,4 @@
 import React from "react";
-import ShopNav from "./ShopNav";
 
 function ShopHome() {
   return (
