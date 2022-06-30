@@ -1,12 +1,26 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import UserContext from "./UserContext";
 
-export default function AdminnAddNewItem({ fetchItems }) {
+type Item = {
+  _id?: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number | string;
+  stock: number | string;
+  imagePath: string;
+};
+
+interface Props {
+  fetchItems: () => Promise<void>;
+}
+
+const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
+  const context = useContext(UserContext);
   const navigate = useNavigate();
-  const { handleAlert } = useContext(UserContext);
-  const [itemData, setItemData] = useState({
+
+  const [itemData, setItemData] = useState<Item>({
     itemName: "",
     itemDescription: "",
     itemPrice: "",
@@ -27,7 +41,7 @@ export default function AdminnAddNewItem({ fetchItems }) {
     });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "itemPrice") {
       const regex = /^[0-9\b,.]+$/;
       if (e.target.value === "" || regex.test(e.target.value)) {
@@ -65,22 +79,30 @@ export default function AdminnAddNewItem({ fetchItems }) {
   };
 
   const handleSave = async () => {
-    try {
-      await axios.post("http://localhost:3001/api/shop/items", itemData);
-      fetchItems();
-      handleAlert("success", "Successfully added new item", 1500);
-      navigate("/eshop/admin");
-    } catch (err) {
-      handleAlert("error", err.message, 5000);
+    if (context !== null) {
+      const { handleAlert } = context;
+      try {
+        await axios.post("http://localhost:3001/api/shop/items", itemData);
+        fetchItems();
+        handleAlert("success", "Successfully added new item", 1500);
+        navigate("/eshop/admin");
+      } catch (err) {
+        if (err instanceof Error) {
+          handleAlert("error", err.message, 5000);
+        } else {
+          alert("caught but not instanceof alert");
+        }
+      }
     }
   };
 
   const [saveDisabled, setSaveDisabled] = useState(false);
-  const keys = Object.keys(itemData);
 
   const checkIfAnyEmpty = () => {
-    const empty = keys.map((k) => itemData[k]).some((value) => value === "");
-    return empty;
+    const isEmpty = Object.values(itemData).some(
+      (k) => k === undefined || k === ""
+    );
+    return isEmpty;
   };
 
   useEffect(() => {
@@ -200,4 +222,5 @@ export default function AdminnAddNewItem({ fetchItems }) {
       </div>
     </div>
   );
-}
+};
+export default AdminAddNewItem;

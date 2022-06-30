@@ -133,15 +133,15 @@ body {
 
 .card-price {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .card-name {
 }
 
 .itemimg {
-  width: 34em;
-  height: 30em;
+  width: 90%;
+  height: 40vh;
   opacity: 0.25;
 }
 
@@ -272,7 +272,7 @@ button:disabled {
 
 .adminButtonsRow {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   border: red 1px solid;
 }
 
@@ -287,12 +287,12 @@ button:disabled {
 
 .justify-start {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .justify-end {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .justify-center {

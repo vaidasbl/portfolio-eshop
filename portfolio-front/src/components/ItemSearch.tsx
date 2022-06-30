@@ -1,13 +1,27 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, FC, ChangeEvent } from "react";
 
-function ItemSearch({ setItems }) {
-  const [searchString, setSearchString] = useState("");
-  const [validSearch, setValidSearch] = useState(true);
+type Item = {
+  _id: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number;
+  stock: number;
+  imagePath: string;
+};
 
-  const handleSearch = async (e) => {
+interface Props {
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+}
+
+const ItemSearch: FC<Props> = ({ setItems }) => {
+  const [searchString, setSearchString] = useState<string>("");
+  const [validSearch, setValidSearch] = useState<boolean>(true);
+
+  const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
     const searchString = e.target.value;
     const regex = /^[a-zA-Zą-ž\s\d-]+$/;
+    console.log(e);
 
     try {
       if (searchString === "" || regex.test(searchString)) {
@@ -15,12 +29,13 @@ function ItemSearch({ setItems }) {
         const response = await axios.get(
           `http://localhost:3001/api/shop/items/search/${searchString}`
         );
+
         setItems(response.data);
       } else {
         setValidSearch(false);
         setTimeout(() => setValidSearch(true), 500);
       }
-    } catch (err) {
+    } catch (err: any) {
       alert(err.message);
     }
   };
@@ -37,6 +52,6 @@ function ItemSearch({ setItems }) {
       ></input>
     </div>
   );
-}
+};
 
 export default ItemSearch;

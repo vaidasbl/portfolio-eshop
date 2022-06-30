@@ -1,13 +1,29 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ItemSearch from "./ItemSearch";
-import { UserContext } from "./UserContext";
+import UserContext from "./UserContext";
 
-export default function ItemAdmin({ items, setItems, fetchItems }) {
+type Item = {
+  _id: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number;
+  stock: number;
+  imagePath: string;
+};
+
+interface Props {
+  items: Item[];
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+  fetchItems: () => Promise<void>;
+}
+
+const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
+  const context = useContext(UserContext);
   const navigate = useNavigate();
-  const { handleAlert } = useContext(UserContext);
+
   const [itemData, setItemData] = useState({
     itemName: "",
     itemDescription: "",
@@ -22,47 +38,48 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
     editedItem: {},
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setItemData((prevState) => {
       return {
         ...prevState,
-        [e.target.name]: isNaN(e.target.value)
+        [e.target.name]: isNaN(Number(e.target.value))
           ? e.target.value
           : Number(e.target.value),
       };
     });
   };
 
-  const handleDelete = async (item) => {
-    try {
-      const result = await Swal.fire({
-        title: "Are you sure?",
+  const handleDelete = async (item: Item) => {
+    if (context !== null) {
+      const { handleAlert } = context;
+      try {
+        const result = await Swal.fire({
+          title: "Are you sure?",
 
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      });
-      if (result.isConfirmed) {
-        await axios.delete(`http://localhost:3001/api/shop/items/${item._id}`);
-        handleAlert("success", "Successfully deleted", 1500);
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+        });
+        if (result.isConfirmed) {
+          await axios.delete(
+            `http://localhost:3001/api/shop/items/${item._id}`
+          );
+          handleAlert("success", "Successfully deleted", 1500);
+        }
+      } catch (err) {
+        alert("error but not instance of Error");
+        if (err instanceof Error) handleAlert("error", err.message, 5000);
       }
-    } catch (err) {
-      handleAlert("error", err.message, 5000);
+
+      fetchItems();
+
+      setEdit({ ...edit, inEditMode: false });
     }
-
-    fetchItems();
-
-    setEdit({
-      inEditMode: false,
-    });
   };
 
-  const handleEdit = (item) => {
-    setEdit({
-      inEditMode: true,
-      editRowId: item._id,
-    });
+  const handleEdit = (item: Item) => {
+    setEdit({ ...edit, inEditMode: true, editRowId: item._id });
 
     setItemData({
       ...itemData,
@@ -78,7 +95,7 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
     fetchItems();
   }, []);
 
-  const handleSave = async (item) => {
+  const handleSave = async (item: Item) => {
     try {
       await axios.put(
         `http://localhost:3001/api/shop/items/${item._id}`,
@@ -86,14 +103,13 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
       );
       fetchItems();
     } catch (err) {
-      if (err.response.status === 400) {
+      alert("caught but not instanceof error");
+      if (err instanceof Error) {
         alert("bad data input. saving failed.");
       }
     }
 
-    setEdit({
-      inEditMode: false,
-    });
+    setEdit({ ...edit, inEditMode: false });
   };
 
   return (
@@ -178,11 +194,7 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
                 </button>
                 <button
                   className="myBtn3"
-                  onClick={() =>
-                    setEdit({
-                      inEditMode: false,
-                    })
-                  }
+                  onClick={() => setEdit({ ...edit, inEditMode: false })}
                 >
                   Cancel
                 </button>
@@ -213,4 +225,5 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
       </div>
     </div>
   );
-}
+};
+export default ItemAdmin;

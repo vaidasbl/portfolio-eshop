@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import UserContext from "./UserContext";
+import SetBorder from "./SetBorder";
 
 export default function ShopNav() {
+  const context = useContext(UserContext);
+  const navigate = useNavigate();
+  const user = context?.user;
   const location = useLocation();
-  const { user, dispatch, handleAlert } = useContext(UserContext);
+
   const [active, setActive] = useState({
     home: true,
     items: false,
@@ -15,31 +17,13 @@ export default function ShopNav() {
     admin: false,
   });
 
-  const setBorder = () => {
-    if (location.pathname === "/eshop") {
-      setActive({ home: true });
-    } else if (
-      location.pathname === "/eshop/items" ||
-      location.pathname.includes("items/")
-    ) {
-      setActive({ items: true });
-    } else if (location.pathname === "/eshop/cart") {
-      setActive({ cart: true });
-    } else if (location.pathname === "/eshop/login") {
-      setActive({ login: true });
-    } else if (location.pathname.includes("admin")) {
-      setActive({ admin: true });
-    }
-  };
-
   useEffect(() => {
-    setBorder();
+    console.log(user);
+    SetBorder(location, active, setActive);
   }, [location.pathname]);
 
-  const navigate = useNavigate();
-  const navPush = (e) => {
-    let id = e.target.id;
-
+  const navPush = (e: React.MouseEvent<HTMLElement>) => {
+    const id = (e.target as HTMLInputElement).id;
     switch (id) {
       case "shopnavhome":
         navigate("/eshop");
@@ -62,8 +46,14 @@ export default function ShopNav() {
   };
 
   const handleLogout = async () => {
-    await dispatch({ type: "LOGOUT" });
-    handleAlert("info", "Sucessfully logged out", 1500);
+    if (context !== null) {
+      const { dispatch, handleAlert } = context;
+
+      await dispatch({ type: "LOGOUT" });
+      handleAlert("info", "Sucessfully logged out", 1500);
+    } else {
+      alert("context is null");
+    }
   };
 
   return (
@@ -93,7 +83,7 @@ export default function ShopNav() {
             >
               ITEMS
             </div>
-            {user.role === "ADMIN" ? (
+            {user?.role === "ADMIN" ? (
               <div
                 className={
                   active.admin
@@ -121,7 +111,7 @@ export default function ShopNav() {
           </div>
         </div>
 
-        {!user.isAuthenticated ? (
+        {user?.isAuthenticated === false ? (
           <div className="col-sm-4 justify-end">
             <div
               className={
@@ -139,7 +129,7 @@ export default function ShopNav() {
           <div className="col-sm-8 ">
             <div className="row flex-end">
               <div className="col-sm-3 pointercursor highlight ">
-                Logged in as: {user.username}
+                Logged in as: {user?.username}
               </div>
               <div
                 onClick={handleLogout}

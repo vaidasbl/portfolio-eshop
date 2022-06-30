@@ -1,25 +1,47 @@
-import Alert from "@mui/material/Alert";
 import axios from "axios";
-import React, { useState } from "react";
-import { useContext } from "react";
+import React from "react";
+import { useContext, FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ItemCard from "./ItemCard";
-import { UserContext } from "./UserContext";
+import UserContext from "./UserContext";
 
-export default function ItemDetails({ items, fetchItems }) {
+type Item = {
+  _id: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number;
+  stock: number;
+  imagePath: string;
+};
+
+interface Props {
+  items: Item[];
+  fetchItems: () => Promise<void>;
+}
+
+const ItemDetails: FC<Props> = ({ items, fetchItems }) => {
+  const context = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user, handleAlert } = useContext(UserContext);
 
-  const handleAddToCart = async (i) => {
-    try {
-      await axios.put(
-        `http://localhost:3001/api/shop/items/${i._id}/addtouser/${user._id}`
-      );
-      handleAlert("success", "Item added to the cart", 750);
-      await fetchItems();
-    } catch (err) {
-      handleAlert("error", err.response.data, 750);
+  const user = context?.user;
+
+  const handleAddToCart = async (i: Item) => {
+    if (context !== null) {
+      const { handleAlert, user } = context;
+      try {
+        await axios.put(
+          `http://localhost:3001/api/shop/items/${i._id}/addtouser/${user._id}`
+        );
+        handleAlert("success", "Item added to the cart", 750);
+        await fetchItems();
+      } catch (err) {
+        if (err instanceof Error) {
+          handleAlert("error", err.message, 750);
+        }
+      }
+    } else {
+      alert("context is null");
     }
   };
 
@@ -42,7 +64,7 @@ export default function ItemDetails({ items, fetchItems }) {
                 Items in warehouse: {i.stock ? i.stock : 0}
               </div>
             </div>
-            {user.role === "USER" ? (
+            {user?.role === "USER" ? (
               <div className="col-sm-5 justify-between">
                 <button
                   onClick={() => handleAddToCart(i)}
@@ -67,4 +89,5 @@ export default function ItemDetails({ items, fetchItems }) {
         ))}
     </div>
   );
-}
+};
+export default ItemDetails;
