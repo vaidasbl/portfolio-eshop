@@ -1,6 +1,12 @@
 import React from "react";
 
-function ItemCard({ image, name, price }) {
+type Props = {
+  image: string;
+  name: string;
+  price: number;
+};
+
+function ItemCard({ image, name, price }: Props) {
   return (
     <div className="item-card-container ">
       <div className="item-card-image-container">

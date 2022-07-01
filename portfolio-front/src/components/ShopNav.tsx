@@ -3,13 +3,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
 import SetBorder from "./SetBorder";
 
+type Navbar = {
+  home: boolean;
+  items: boolean;
+  cart: boolean;
+  login: boolean;
+  admin: boolean;
+};
+
 export default function ShopNav() {
   const context = useContext(UserContext);
   const navigate = useNavigate();
   const user = context?.user;
-  const location = useLocation();
+  const location = useLocation().pathname;
 
-  const [active, setActive] = useState({
+  const [active, setActive] = useState<Navbar>({
     home: true,
     items: false,
     cart: false,
@@ -20,7 +28,7 @@ export default function ShopNav() {
   useEffect(() => {
     console.log(user);
     SetBorder(location, active, setActive);
-  }, [location.pathname]);
+  }, [location]);
 
   const navPush = (e: React.MouseEvent<HTMLElement>) => {
     const id = (e.target as HTMLInputElement).id;

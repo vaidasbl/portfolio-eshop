@@ -1,5 +1,17 @@
-const SetBorder = (location, active, setActive) => {
-  if (location.pathname === "/eshop") {
+type Navbar = {
+  home: boolean;
+  items: boolean;
+  cart: boolean;
+  login: boolean;
+  admin: boolean;
+};
+
+const SetBorder = (
+  location: string,
+  active: Navbar,
+  setActive: React.Dispatch<React.SetStateAction<Navbar>>
+) => {
+  if (location === "/eshop") {
     setActive({
       ...active,
       items: false,
@@ -8,10 +20,7 @@ const SetBorder = (location, active, setActive) => {
       admin: false,
       home: true,
     });
-  } else if (
-    location.pathname === "/eshop/items" ||
-    location.pathname.includes("items/")
-  ) {
+  } else if (location === "/eshop/items" || location.includes("items/")) {
     setActive({
       ...active,
       items: true,
@@ -20,7 +29,7 @@ const SetBorder = (location, active, setActive) => {
       admin: false,
       home: false,
     });
-  } else if (location.pathname === "/eshop/cart") {
+  } else if (location === "/eshop/cart") {
     setActive({
       ...active,
       items: false,
@@ -29,7 +38,7 @@ const SetBorder = (location, active, setActive) => {
       admin: false,
       home: false,
     });
-  } else if (location.pathname === "/eshop/login") {
+  } else if (location === "/eshop/login") {
     setActive({
       ...active,
       items: false,
@@ -38,7 +47,7 @@ const SetBorder = (location, active, setActive) => {
       admin: false,
       home: false,
     });
-  } else if (location.pathname.includes("admin")) {
+  } else if (location.includes("admin")) {
     setActive({
       ...active,
       items: false,
