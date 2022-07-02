@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useContext, useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import ItemSearch from "./ItemSearch";
-import UserContext from "./UserContext";
+import ItemSearch from "../07 Common Components/ItemSearch";
+import UserContext from "../07 Common Components/UserContext";
 
 type Item = {
   _id: string;
@@ -147,7 +147,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   name="itemName"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.itemName}
                 ></input>
               </div>
@@ -156,7 +156,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   name="itemDescription"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.itemDescription}
                 ></input>
               </div>
@@ -165,7 +165,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   name="itemPrice"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.itemPrice}
                 ></input>
               </div>
@@ -174,7 +174,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   name="stock"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.stock}
                 ></input>
               </div>
@@ -183,7 +183,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   name="imagePath"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.imagePath}
                 ></input>
               </div>

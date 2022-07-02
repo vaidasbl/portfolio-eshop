@@ -9,13 +9,6 @@ type User = {
 
 type Reducer<User, Action> = (user: User, action: Action) => User;
 
-type ActionType = "LOGIN" | "LOGOUT";
-
-type Action = {
-  type: ActionType;
-  payload: User;
-};
-
 type AlertType = "success" | "info" | "warning" | "error";
 
 type Alert = {

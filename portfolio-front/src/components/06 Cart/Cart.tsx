@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import UserContext from "./UserContext";
+import UserContext from "../07 Common Components/UserContext";
 
 type CartItem = {
   itemId?: string;

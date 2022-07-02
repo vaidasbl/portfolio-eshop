@@ -1,8 +1,7 @@
-import axios from "axios";
-import React, { useEffect, FC } from "react";
+import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import ItemCard from "./ItemCard";
-import ItemSearch from "./ItemSearch";
+import ItemCard from "../05 Shop Item/ItemCard";
+import ItemSearch from "../07 Common Components/ItemSearch";
 
 type Item = {
   _id: string;
@@ -20,18 +19,10 @@ type Props = {
 
 const ShopItems: FC<Props> = ({ items, setItems }) => {
   const navigate = useNavigate();
+
   const navToDetails = (id: string) => {
     navigate(`/eshop/items/${id}`);
   };
-
-  const fetchItems = async () => {
-    const response = await axios.get("http://localhost:3001/api/shop/items");
-    setItems(response.data);
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   if (items !== undefined || items !== null) {
     return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import UserContext from "./UserContext";
-import SetBorder from "./SetBorder";
+import UserContext from "../07 Common Components/UserContext";
+import SetBorder from "../07 Common Components/SetBorder";
 
 type Navbar = {
   home: boolean;
@@ -26,32 +26,8 @@ export default function ShopNav() {
   });
 
   useEffect(() => {
-    console.log(user);
     SetBorder(location, active, setActive);
   }, [location]);
-
-  const navPush = (e: React.MouseEvent<HTMLElement>) => {
-    const id = (e.target as HTMLInputElement).id;
-    switch (id) {
-      case "shopnavhome":
-        navigate("/eshop");
-        break;
-      case "shopnavitems":
-        navigate("/eshop/items");
-        break;
-      case "shopnavadmin":
-        navigate("/eshop/admin");
-        break;
-      case "shopnavcart":
-        navigate("/eshop/cart");
-        break;
-      case "shopnavlogin":
-        navigate("/eshop/login");
-        break;
-      default:
-        navigate("/eshop");
-    }
-  };
 
   const handleLogout = async () => {
     if (context !== null) {
@@ -63,6 +39,9 @@ export default function ShopNav() {
       alert("context is null");
     }
   };
+
+  // (e: React.MouseEvent<HTMLElement>) => {
+  // id = (e.target as HTMLInputElement).id;
 
   return (
     <div className="shopheader sticky">
@@ -76,7 +55,7 @@ export default function ShopNav() {
                   : "col-sm-3 shopnav-item"
               }
               id="shopnavhome"
-              onClick={(e) => navPush(e)}
+              onClick={() => navigate("/eshop")}
             >
               HOME
             </div>
@@ -87,7 +66,7 @@ export default function ShopNav() {
                   : "col-sm-3 shopnav-item"
               }
               id="shopnavitems"
-              onClick={(e) => navPush(e)}
+              onClick={() => navigate("/eshop/items")}
             >
               ITEMS
             </div>
@@ -99,7 +78,7 @@ export default function ShopNav() {
                     : "col-sm-3 shopnav-item"
                 }
                 id="shopnavadmin"
-                onClick={(e) => navPush(e)}
+                onClick={() => navigate("/eshop/admin")}
               >
                 ADMIN
               </div>
@@ -111,7 +90,7 @@ export default function ShopNav() {
                     : "col-sm-3 shopnav-item"
                 }
                 id="shopnavcart"
-                onClick={(e) => navPush(e)}
+                onClick={() => navigate("/eshop/cart")}
               >
                 CART
               </div>
@@ -128,7 +107,7 @@ export default function ShopNav() {
                   : "col-sm-3 shopnav-item"
               }
               id="shopnavlogin"
-              onClick={(e) => navPush(e)}
+              onClick={() => navigate("/eshop/login")}
             >
               Login
             </div>

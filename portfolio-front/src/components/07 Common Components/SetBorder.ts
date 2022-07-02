@@ -20,7 +20,7 @@ const SetBorder = (
       admin: false,
       home: true,
     });
-  } else if (location === "/eshop/items" || location.includes("items/")) {
+  } else if (location === "/eshop/items" || location?.includes("items/")) {
     setActive({
       ...active,
       items: true,
@@ -47,7 +47,7 @@ const SetBorder = (
       admin: false,
       home: false,
     });
-  } else if (location.includes("admin")) {
+  } else if (location?.includes("admin")) {
     setActive({
       ...active,
       items: false,

@@ -2,8 +2,8 @@ import axios from "axios";
 import React from "react";
 import { useContext, FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ItemCard from "./ItemCard";
-import UserContext from "./UserContext";
+import ItemCard from "../05 Shop Item/ItemCard";
+import UserContext from "../07 Common Components/UserContext";
 
 type Item = {
   _id: string;

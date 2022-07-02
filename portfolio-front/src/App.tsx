@@ -5,21 +5,18 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-
-import React, { useEffect, useReducer, useState } from "react";
-
-import UserContext from "./components/UserContext";
-import HomeHome from "./components/HomeHome";
-import ShopHome from "./components/ShopHome";
-import ShopItems from "./components/ShopItems";
+import React, { useReducer, useState } from "react";
+import UserContext from "./components/07 Common Components/UserContext";
+import ShopHome from "./components/02 Shop Home/ShopHome";
+import ShopItems from "./components/05 Shop Item/ShopItems";
 import axios from "axios";
-import ItemDetails from "./components/ItemDetails";
-import ItemAdmin from "./components/ItemAdmin";
-import AdminAddNewItem from "./components/AdminAddNewItem";
-import Cart from "./components/Cart";
-import Login from "./components/Login";
-import ShopNav from "./components/ShopNav";
-import MyAlert from "./components/MyAlert";
+import ItemDetails from "./components/05 Shop Item/ItemDetails";
+import ItemAdmin from "./components/05 Shop Item/ItemAdmin";
+import AdminAddNewItem from "./components/05 Shop Item/AdminAddNewItem";
+import Cart from "./components/06 Cart/Cart";
+import Login from "./components/04 Shop Login/Login";
+import ShopNav from "./components/03 Shop Nav/ShopNav";
+import MyAlert from "./components/07 Common Components/MyAlert";
 
 type User = {
   isAuthenticated: boolean;
@@ -37,10 +34,8 @@ type Item = {
   imagePath: string;
 };
 
-type ActionType = "LOGIN" | "LOGOUT";
-
 type Action = {
-  type: ActionType;
+  type: "LOGIN" | "LOGOUT";
   payload: User;
 };
 
@@ -113,11 +108,8 @@ function App() {
   const fetchItems = async () => {
     const response = await axios.get("http://localhost:3001/api/shop/items");
     setItems(response.data);
+    console.log(response.data);
   };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   if (user.isAuthenticated) {
     switch (user.role) {
@@ -128,7 +120,6 @@ function App() {
               <ShopNav />
               <MyAlert />
               <Routes>
-                <Route path="/" element={<HomeHome />} />
                 <Route path="/eshop" element={<ShopHome />} />
                 <Route
                   path="/eshop/items"
@@ -150,17 +141,11 @@ function App() {
                     />
                   }
                 />
-
                 <Route
                   path="/eshop/admin/addform"
                   element={<AdminAddNewItem fetchItems={fetchItems} />}
                 />
-
-                <Route path="/eshop/cart" element={<Cart />} />
-                <Route path="/eshop/login" element={<Login />} />
               </Routes>
-
-              <div className="App"></div>
             </Router>
           </UserContext.Provider>
         );
@@ -182,27 +167,8 @@ function App() {
                     <ItemDetails items={items} fetchItems={fetchItems} />
                   }
                 />
-                <Route
-                  path="/eshop/admin"
-                  element={
-                    <ItemAdmin
-                      fetchItems={fetchItems}
-                      items={items}
-                      setItems={setItems}
-                    />
-                  }
-                />
-
-                <Route
-                  path="/eshop/items/addform"
-                  element={<AdminAddNewItem fetchItems={fetchItems} />}
-                />
-
                 <Route path="/eshop/cart" element={<Cart />} />
-                <Route path="/eshop/login" element={<Login />} />
               </Routes>
-
-              <div className="App"></div>
             </Router>
           </UserContext.Provider>
         );
@@ -213,8 +179,8 @@ function App() {
     return (
       <UserContext.Provider value={{ user, dispatch, alert, handleAlert }}>
         <Router>
-          <ShopNav />
           <MyAlert />
+          <ShopNav />
           <Routes>
             <Route path="/eshop" element={<ShopHome />} />
             <Route path="/eshop/login" element={<Login />} />

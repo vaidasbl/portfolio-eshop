@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useContext, FC, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "./UserContext";
+import UserContext from "../07 Common Components/UserContext";
 
 const Login: FC = () => {
   const context = useContext(UserContext);
@@ -11,16 +11,10 @@ const Login: FC = () => {
   const [password, setPassword] = useState<string | null>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const field = e.target.id;
-    switch (field) {
-      case "txtLoginUsername":
-        setUsername(e.target.value);
-        break;
-      case "txtLoginPassword":
-        setPassword(e.target.value);
-        break;
-      default:
-        console.log("Login.jsx 25l");
+    if (e.target.id === "txtLoginUsername") {
+      setUsername(e.target.value);
+    } else if (e.target.id === "txtLoginPassword") {
+      setPassword(e.target.value);
     }
   };
 
@@ -31,7 +25,6 @@ const Login: FC = () => {
       username: username,
       password: password,
     };
-    console.log(context);
 
     if (context !== null) {
       const { dispatch, handleAlert } = context;
@@ -68,7 +61,7 @@ const Login: FC = () => {
               className="form-control text-align-center"
               type="text"
               id="txtLoginUsername"
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
             />
           </div>
 
@@ -78,7 +71,7 @@ const Login: FC = () => {
               className="form-control text-align-center"
               type="text"
               id="txtLoginPassword"
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
             />
           </div>
 

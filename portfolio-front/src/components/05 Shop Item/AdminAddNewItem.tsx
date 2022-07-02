@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "./UserContext";
+import UserContext from "../07 Common Components/UserContext";
 
 type Item = {
   _id?: string;
@@ -28,8 +28,8 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
     imagePath: "",
   });
 
-  const [priceValid, setPriceValid] = useState(true);
-  const [stockValid, setStockValid] = useState(true);
+  const [priceValid, setPriceValid] = useState<boolean>(true);
+  const [stockValid, setStockValid] = useState<boolean>(true);
 
   const handleClear = () => {
     setItemData({
@@ -81,16 +81,18 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
   const handleSave = async () => {
     if (context !== null) {
       const { handleAlert } = context;
+
       try {
         await axios.post("http://localhost:3001/api/shop/items", itemData);
-        fetchItems();
+
+        await fetchItems();
         handleAlert("success", "Successfully added new item", 1500);
         navigate("/eshop/admin");
       } catch (err) {
         if (err instanceof Error) {
           handleAlert("error", err.message, 5000);
         } else {
-          alert("caught but not instanceof alert");
+          alert("caught but not instanceof error");
         }
       }
     }
@@ -127,13 +129,13 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
             value={itemData.itemName}
             required
             id="txtItemName"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
         <div className="mt-3">
           <label className="fsize20 mb-1" htmlFor="txtItemDescription">
-            Item Description
+            Item description
           </label>
           <input
             className="form-control"
@@ -142,7 +144,7 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
             value={itemData.itemDescription}
             required
             id="txtItemDescription"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
@@ -160,7 +162,7 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
             }
             required
             id="txtItemPrice"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
@@ -177,8 +179,8 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
               stockValid ? { border: "none" } : { border: "2px solid red" }
             }
             required
-            id="txtItemPrice"
-            onChange={(e) => handleChange(e)}
+            id="txtStock"
+            onChange={handleChange}
           />
         </div>
 
@@ -194,14 +196,15 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
             required
             id="txtImagePath"
             placeholder="/images/X.jpeg"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
         <div className="row pt-4  justify-between">
           <div className="col-sm-4  justify-start">
             <button
-              onClick={() => handleSave()}
+              data-testid="savebtn"
+              onClick={handleSave}
               className="myBtn2"
               disabled={saveDisabled}
             >
@@ -209,7 +212,7 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
             </button>
           </div>
           <div className="col-sm-6  justify-end">
-            <button onClick={() => handleClear()} className="myBtn2 me-2">
+            <button onClick={handleClear} className="myBtn2 me-2">
               Clear
             </button>
             <button onClick={() => navigate(-1)} className="myBtn2">
