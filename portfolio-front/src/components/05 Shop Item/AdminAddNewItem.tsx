@@ -1,12 +1,27 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import { useDispatch } from "react-redux";
+import { alert } from "../08 Reducers/alert";
 
-export default function AdminnAddNewItem({ fetchItems }) {
+type Item = {
+  _id?: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number | string;
+  stock: number | string;
+  imagePath: string;
+};
+
+interface Props {
+  fetchItems: () => Promise<void>;
+}
+
+const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { handleAlert } = useContext(UserContext);
-  const [itemData, setItemData] = useState({
+
+  const [itemData, setItemData] = useState<Item>({
     itemName: "",
     itemDescription: "",
     itemPrice: "",
@@ -14,8 +29,8 @@ export default function AdminnAddNewItem({ fetchItems }) {
     imagePath: "",
   });
 
-  const [priceValid, setPriceValid] = useState(true);
-  const [stockValid, setStockValid] = useState(true);
+  const [priceValid, setPriceValid] = useState<boolean>(true);
+  const [stockValid, setStockValid] = useState<boolean>(true);
 
   const handleClear = () => {
     setItemData({
@@ -27,7 +42,7 @@ export default function AdminnAddNewItem({ fetchItems }) {
     });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "itemPrice") {
       const regex = /^[0-9\b,.]+$/;
       if (e.target.value === "" || regex.test(e.target.value)) {
@@ -67,20 +82,28 @@ export default function AdminnAddNewItem({ fetchItems }) {
   const handleSave = async () => {
     try {
       await axios.post("http://localhost:3001/api/shop/items", itemData);
-      fetchItems();
-      handleAlert("success", "Successfully added new item", 1500);
+      await fetchItems();
+      dispatch(
+        alert({
+          type: "success",
+          text: "Successfully added the item",
+          time: 1500,
+        })
+      );
       navigate("/eshop/admin");
-    } catch (err) {
-      handleAlert("error", err.message, 5000);
+    } catch (err: any) {
+      dispatch(alert({ type: "error", text: err.message, time: 3000 }));
+      console.log(err.message);
     }
   };
 
   const [saveDisabled, setSaveDisabled] = useState(false);
-  const keys = Object.keys(itemData);
 
   const checkIfAnyEmpty = () => {
-    const empty = keys.map((k) => itemData[k]).some((value) => value === "");
-    return empty;
+    const isEmpty = Object.values(itemData).some(
+      (k) => k === undefined || k === ""
+    );
+    return isEmpty;
   };
 
   useEffect(() => {
@@ -105,13 +128,13 @@ export default function AdminnAddNewItem({ fetchItems }) {
             value={itemData.itemName}
             required
             id="txtItemName"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
         <div className="mt-3">
           <label className="fsize20 mb-1" htmlFor="txtItemDescription">
-            Item Description
+            Item description
           </label>
           <input
             className="form-control"
@@ -120,7 +143,7 @@ export default function AdminnAddNewItem({ fetchItems }) {
             value={itemData.itemDescription}
             required
             id="txtItemDescription"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
@@ -138,7 +161,7 @@ export default function AdminnAddNewItem({ fetchItems }) {
             }
             required
             id="txtItemPrice"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
@@ -155,8 +178,8 @@ export default function AdminnAddNewItem({ fetchItems }) {
               stockValid ? { border: "none" } : { border: "2px solid red" }
             }
             required
-            id="txtItemPrice"
-            onChange={(e) => handleChange(e)}
+            id="txtStock"
+            onChange={handleChange}
           />
         </div>
 
@@ -172,25 +195,25 @@ export default function AdminnAddNewItem({ fetchItems }) {
             required
             id="txtImagePath"
             placeholder="/images/X.jpeg"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
 
-        <div className="row pt-4  justify-between">
-          <div className="col-sm-4  justify-start">
+        <div className="row pt-4  ">
+          <div className="col-4 ">
             <button
-              onClick={() => handleSave()}
-              className="myBtn2"
+              onClick={handleSave}
+              className="myBtn2 myBtn2 ms-minus"
               disabled={saveDisabled}
             >
               Save
             </button>
           </div>
-          <div className="col-sm-6  justify-end">
-            <button onClick={() => handleClear()} className="myBtn2 me-2">
+          <div className="col-8 flex-end">
+            <button onClick={handleClear} className="myBtn2 me-2">
               Clear
             </button>
-            <button onClick={() => navigate(-1)} className="myBtn2">
+            <button onClick={() => navigate(-1)} className="myBtn2 me-minus">
               Go back
             </button>
           </div>
@@ -200,4 +223,5 @@ export default function AdminnAddNewItem({ fetchItems }) {
       </div>
     </div>
   );
-}
+};
+export default AdminAddNewItem;

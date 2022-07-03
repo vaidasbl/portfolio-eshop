@@ -1,13 +1,30 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import ItemSearch from "./ItemSearch";
-import { UserContext } from "./UserContext";
+import ItemSearch from "../07 Common Components/ItemSearch";
+import { useDispatch } from "react-redux";
+import { alert } from "../08 Reducers/alert";
 
-export default function ItemAdmin({ items, setItems, fetchItems }) {
+type Item = {
+  _id: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number;
+  stock: number;
+  imagePath: string;
+};
+
+interface Props {
+  items: Item[];
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+  fetchItems: () => Promise<void>;
+}
+
+const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { handleAlert } = useContext(UserContext);
+
   const [itemData, setItemData] = useState({
     itemName: "",
     itemDescription: "",
@@ -22,18 +39,18 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
     editedItem: {},
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setItemData((prevState) => {
       return {
         ...prevState,
-        [e.target.name]: isNaN(e.target.value)
+        [e.target.name]: isNaN(Number(e.target.value))
           ? e.target.value
           : Number(e.target.value),
       };
     });
   };
 
-  const handleDelete = async (item) => {
+  const handleDelete = async (item: Item) => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -45,24 +62,26 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
       });
       if (result.isConfirmed) {
         await axios.delete(`http://localhost:3001/api/shop/items/${item._id}`);
-        handleAlert("success", "Successfully deleted", 1500);
+        dispatch(
+          alert({
+            type: "success",
+            text: "Item successfully deleted",
+            time: 1500,
+          })
+        );
       }
-    } catch (err) {
-      handleAlert("error", err.message, 5000);
+    } catch (err: any) {
+      dispatch(alert({ type: "error", text: err.message, time: 3000 }));
+      console.log(err.message);
     }
 
     fetchItems();
 
-    setEdit({
-      inEditMode: false,
-    });
+    setEdit({ ...edit, inEditMode: false });
   };
 
-  const handleEdit = (item) => {
-    setEdit({
-      inEditMode: true,
-      editRowId: item._id,
-    });
+  const handleEdit = (item: Item) => {
+    setEdit({ ...edit, inEditMode: true, editRowId: item._id });
 
     setItemData({
       ...itemData,
@@ -78,47 +97,49 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
     fetchItems();
   }, []);
 
-  const handleSave = async (item) => {
+  const handleSave = async (item: Item) => {
     try {
       await axios.put(
         `http://localhost:3001/api/shop/items/${item._id}`,
         itemData
       );
       fetchItems();
-    } catch (err) {
-      if (err.response.status === 400) {
-        alert("bad data input. saving failed.");
-      }
+      dispatch(
+        alert({ type: "success", text: "Successfully updated", time: 1500 })
+      );
+    } catch (err: any) {
+      dispatch(alert({ type: "error", text: err.message, time: 3000 }));
+      console.log(err.message);
     }
 
-    setEdit({
-      inEditMode: false,
-    });
+    setEdit({ ...edit, inEditMode: false });
   };
 
   return (
     <div className="black-container">
-      <div className="row pt-4">
-        <div className="col-sm-4 ">
-          <button
-            onClick={() => navigate("/eshop/admin/addform")}
-            className="myBtn"
-          >
-            Add new item
-          </button>
-        </div>
-        <div className="col-sm-8">
-          <ItemSearch setItems={setItems} />
+      <div className="col-sm-12 col-md-6 col-lg-4 ">
+        <div className="row pt-4">
+          <div className="col-sm-4 col-md-6 col-lg-6 ">
+            <button
+              onClick={() => navigate("/eshop/admin/addform")}
+              className="myBtn"
+            >
+              Add new item
+            </button>
+          </div>
+          <div className="col-sm-4 col-md-6 col-lg-6 ">
+            <ItemSearch setItems={setItems} />
+          </div>
         </div>
       </div>
 
       <div className="row pb-4 pt-10 center tableheader">
-        <div className="col-sm-2">ITEM NAME</div>
-        <div className="col-sm-2">ITEM DESCRIPTION</div>
-        <div className="col-sm-2">ITEM PRICE</div>
-        <div className="col-sm-2">STOCK</div>
-        <div className="col-sm-2">IMAGE PATH</div>
-        <div className="col-sm-2"></div>
+        <div className="col-2">ITEM NAME</div>
+        <div className="col-2">ITEM DESCRIPTION</div>
+        <div className="col-2">ITEM PRICE</div>
+        <div className="col-2">STOCK</div>
+        <div className="col-2">IMAGE PATH</div>
+        <div className="col-2"></div>
       </div>
 
       {items.map((item) => (
@@ -126,63 +147,62 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
           {edit.inEditMode && edit.editRowId === item._id ? (
             <div className="row  editFormRow">
               <hr />
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="itemName"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.itemName}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="itemDescription"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.itemDescription}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="itemPrice"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.itemPrice}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="stock"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.stock}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="imagePath"
                   type="text"
                   className="editForm inputBoxOutline"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={item.imagePath}
                 ></input>
               </div>
 
-              <div className="col-sm-2 alignRight">
-                <button className="myBtn3" onClick={() => handleSave(item)}>
+              <div className="col-sm-2 col-md-2 ">
+                <button
+                  className="myBtn3 me-1"
+                  onClick={() => handleSave(item)}
+                >
                   Save
                 </button>
                 <button
-                  className="myBtn3"
-                  onClick={() =>
-                    setEdit({
-                      inEditMode: false,
-                    })
-                  }
+                  className="myBtn3 me-1"
+                  onClick={() => setEdit({ ...edit, inEditMode: false })}
                 >
                   Cancel
                 </button>
@@ -197,13 +217,13 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
           ) : (
             <div onClick={() => handleEdit(item)} className="row editFormRow">
               <hr />
-              <div className="col-sm-2">{item.itemName}</div>
-              <div className="col-sm-2">{item.itemDescription}</div>
-              <div className="col-sm-2">{item.itemPrice}</div>
-              <div className="col-sm-2">{item.stock}</div>
-              <div className="col-sm-2">{item.imagePath}</div>
+              <div className="col-2 overflow">{item.itemName}</div>
+              <div className="col-2 overflow">{item.itemDescription}</div>
+              <div className="col-2 overflow">{item.itemPrice}</div>
+              <div className="col-2 overflow">{item.stock}</div>
+              <div className="col-2 overflow">{item.imagePath}</div>
 
-              <div className="col-sm-2 "></div>
+              <div className="col-2 "></div>
             </div>
           )}
         </div>
@@ -213,4 +233,5 @@ export default function ItemAdmin({ items, setItems, fetchItems }) {
       </div>
     </div>
   );
-}
+};
+export default ItemAdmin;

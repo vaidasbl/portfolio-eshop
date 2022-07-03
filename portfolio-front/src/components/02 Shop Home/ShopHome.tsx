@@ -3,7 +3,9 @@ import React from "react";
 function ShopHome() {
   return (
     <div className="black-container">
-      <div className="fsize35 greeting">This is a template of an eshop app</div>
+      <div data-testid="greeting-div" className="fsize35 greeting">
+        This is a template of an eshop app
+      </div>
     </div>
   );
 }

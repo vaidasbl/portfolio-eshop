@@ -5,8 +5,8 @@ export default function GreetingNav() {
   const navigate = useNavigate();
   const [theme, setTheme] = useState("");
 
-  const navPush = (e) => {
-    let id = e.target.id;
+  const navPush = (e: React.MouseEvent<HTMLElement>) => {
+    let id = (e.target as HTMLInputElement).id;
 
     if (id === "naveshop") {
       setTheme("eshop");

@@ -1,31 +1,28 @@
 import axios from "axios";
-import React, { useState, useContext } from "react";
+import React, { useState, FC, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import { useDispatch } from "react-redux";
+import { login } from "../08 Reducers/user";
+import { alert } from "../08 Reducers/alert";
 
-function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const { dispatch, handleAlert } = useContext(UserContext);
-
+const Login: FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const field = e.target.id;
-    switch (field) {
-      case "txtLoginUsername":
-        setUsername(e.target.value);
-        break;
-      case "txtLoginPassword":
-        setPassword(e.target.value);
-        break;
-      default:
-        console.log("Login.jsx 25l");
+  const [username, setUsername] = useState<string | null>("");
+  const [password, setPassword] = useState<string | null>("");
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.id === "txtLoginUsername") {
+      setUsername(e.target.value);
+    } else if (e.target.id === "txtLoginPassword") {
+      setPassword(e.target.value);
     }
   };
-  const handleLogin = async (e) => {
+
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+
     const loginJson = {
       username: username,
       password: password,
@@ -38,13 +35,16 @@ function Login() {
       );
 
       if (result.data.success) {
-        await dispatch({ type: "LOGIN", payload: result.data });
+        console.log(result.data);
+        dispatch(login(result.data));
         navigate("/eshop");
-        handleAlert("info", "Successfully logged in", 750);
+        dispatch(
+          alert({ type: "success", text: "Successfully logged in", time: 1500 })
+        );
       } else {
       }
-    } catch (err) {
-      handleAlert("warning", err.response.data.reason, 1500);
+    } catch (err: any) {
+      console.log(err);
     }
   };
 
@@ -61,7 +61,7 @@ function Login() {
               className="form-control text-align-center"
               type="text"
               id="txtLoginUsername"
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
             />
           </div>
 
@@ -71,7 +71,7 @@ function Login() {
               className="form-control text-align-center"
               type="text"
               id="txtLoginPassword"
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
             />
           </div>
 
@@ -84,6 +84,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;
