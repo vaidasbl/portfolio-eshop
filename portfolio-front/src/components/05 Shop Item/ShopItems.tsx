@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ItemCard from "../05 Shop Item/ItemCard";
 import ItemSearch from "../07 Common Components/ItemSearch";
@@ -15,14 +15,18 @@ type Item = {
 type Props = {
   items: Item[];
   setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+  fetchItems: () => Promise<void>;
 };
 
-const ShopItems: FC<Props> = ({ items, setItems }) => {
+const ShopItems: FC<Props> = ({ items, setItems, fetchItems }) => {
   const navigate = useNavigate();
-
   const navToDetails = (id: string) => {
     navigate(`/eshop/items/${id}`);
   };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   if (items !== undefined || items !== null) {
     return (

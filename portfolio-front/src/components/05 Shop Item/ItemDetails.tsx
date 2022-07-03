@@ -1,9 +1,10 @@
 import axios from "axios";
 import React from "react";
-import { useContext, FC } from "react";
+import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ItemCard from "../05 Shop Item/ItemCard";
-import UserContext from "../07 Common Components/UserContext";
+import { useSelector, useDispatch } from "react-redux";
+import { alert } from "../08 Reducers/alert";
 
 type Item = {
   _id: string;
@@ -20,29 +21,25 @@ interface Props {
 }
 
 const ItemDetails: FC<Props> = ({ items, fetchItems }) => {
-  const context = useContext(UserContext);
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.value);
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const user = context?.user;
-
   const handleAddToCart = async (i: Item) => {
-    if (context !== null) {
-      const { handleAlert, user } = context;
-      try {
-        await axios.put(
-          `http://localhost:3001/api/shop/items/${i._id}/addtouser/${user._id}`
-        );
-        handleAlert("success", "Item added to the cart", 750);
-        await fetchItems();
-      } catch (err) {
-        if (err instanceof Error) {
-          handleAlert("error", err.message, 750);
-        }
-      }
-    } else {
-      alert("context is null");
-    }
+    try {
+      await axios.put(
+        `http://localhost:3001/api/shop/items/${i._id}/addtouser/${user._id}`
+      );
+      dispatch(
+        alert({
+          type: "success",
+          text: "Item successfully added",
+          time: 1500,
+        })
+      );
+      await fetchItems();
+    } catch (err) {}
   };
 
   return (
@@ -64,7 +61,7 @@ const ItemDetails: FC<Props> = ({ items, fetchItems }) => {
                 Items in warehouse: {i.stock ? i.stock : 0}
               </div>
             </div>
-            {user?.role === "USER" ? (
+            {user.role === "USER" ? (
               <div className="col-sm-5 justify-between">
                 <button
                   onClick={() => handleAddToCart(i)}

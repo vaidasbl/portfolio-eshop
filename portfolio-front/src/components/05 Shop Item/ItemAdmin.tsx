@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState, FC, ChangeEvent } from "react";
+import React, { useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ItemSearch from "../07 Common Components/ItemSearch";
-import UserContext from "../07 Common Components/UserContext";
+import { useDispatch } from "react-redux";
+import { alert } from "../08 Reducers/alert";
 
 type Item = {
   _id: string;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
-  const context = useContext(UserContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [itemData, setItemData] = useState({
@@ -50,32 +51,33 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
   };
 
   const handleDelete = async (item: Item) => {
-    if (context !== null) {
-      const { handleAlert } = context;
-      try {
-        const result = await Swal.fire({
-          title: "Are you sure?",
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
 
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes",
-        });
-        if (result.isConfirmed) {
-          await axios.delete(
-            `http://localhost:3001/api/shop/items/${item._id}`
-          );
-          handleAlert("success", "Successfully deleted", 1500);
-        }
-      } catch (err) {
-        alert("error but not instance of Error");
-        if (err instanceof Error) handleAlert("error", err.message, 5000);
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      });
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:3001/api/shop/items/${item._id}`);
+        dispatch(
+          alert({
+            type: "success",
+            text: "Item successfully deleted",
+            time: 1500,
+          })
+        );
       }
-
-      fetchItems();
-
-      setEdit({ ...edit, inEditMode: false });
+    } catch (err: any) {
+      dispatch(alert({ type: "error", text: err.message, time: 3000 }));
+      console.log(err.message);
     }
+
+    fetchItems();
+
+    setEdit({ ...edit, inEditMode: false });
   };
 
   const handleEdit = (item: Item) => {
@@ -102,11 +104,12 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
         itemData
       );
       fetchItems();
-    } catch (err) {
-      alert("caught but not instanceof error");
-      if (err instanceof Error) {
-        alert("bad data input. saving failed.");
-      }
+      dispatch(
+        alert({ type: "success", text: "Successfully updated", time: 1500 })
+      );
+    } catch (err: any) {
+      dispatch(alert({ type: "error", text: err.message, time: 3000 }));
+      console.log(err.message);
     }
 
     setEdit({ ...edit, inEditMode: false });
@@ -114,27 +117,29 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
 
   return (
     <div className="black-container">
-      <div className="row pt-4">
-        <div className="col-sm-4 ">
-          <button
-            onClick={() => navigate("/eshop/admin/addform")}
-            className="myBtn"
-          >
-            Add new item
-          </button>
-        </div>
-        <div className="col-sm-8">
-          <ItemSearch setItems={setItems} />
+      <div className="col-sm-12 col-md-6 col-lg-4 ">
+        <div className="row pt-4">
+          <div className="col-sm-4 col-md-6 col-lg-6 ">
+            <button
+              onClick={() => navigate("/eshop/admin/addform")}
+              className="myBtn"
+            >
+              Add new item
+            </button>
+          </div>
+          <div className="col-sm-4 col-md-6 col-lg-6 ">
+            <ItemSearch setItems={setItems} />
+          </div>
         </div>
       </div>
 
       <div className="row pb-4 pt-10 center tableheader">
-        <div className="col-sm-2">ITEM NAME</div>
-        <div className="col-sm-2">ITEM DESCRIPTION</div>
-        <div className="col-sm-2">ITEM PRICE</div>
-        <div className="col-sm-2">STOCK</div>
-        <div className="col-sm-2">IMAGE PATH</div>
-        <div className="col-sm-2"></div>
+        <div className="col-2">ITEM NAME</div>
+        <div className="col-2">ITEM DESCRIPTION</div>
+        <div className="col-2">ITEM PRICE</div>
+        <div className="col-2">STOCK</div>
+        <div className="col-2">IMAGE PATH</div>
+        <div className="col-2"></div>
       </div>
 
       {items.map((item) => (
@@ -142,7 +147,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
           {edit.inEditMode && edit.editRowId === item._id ? (
             <div className="row  editFormRow">
               <hr />
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="itemName"
                   type="text"
@@ -151,7 +156,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   defaultValue={item.itemName}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="itemDescription"
                   type="text"
@@ -160,7 +165,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   defaultValue={item.itemDescription}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="itemPrice"
                   type="text"
@@ -169,7 +174,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   defaultValue={item.itemPrice}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="stock"
                   type="text"
@@ -178,7 +183,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                   defaultValue={item.stock}
                 ></input>
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-2 col-md-2">
                 <input
                   name="imagePath"
                   type="text"
@@ -188,12 +193,15 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
                 ></input>
               </div>
 
-              <div className="col-sm-2 alignRight">
-                <button className="myBtn3" onClick={() => handleSave(item)}>
+              <div className="col-sm-2 col-md-2 ">
+                <button
+                  className="myBtn3 me-1"
+                  onClick={() => handleSave(item)}
+                >
                   Save
                 </button>
                 <button
-                  className="myBtn3"
+                  className="myBtn3 me-1"
                   onClick={() => setEdit({ ...edit, inEditMode: false })}
                 >
                   Cancel
@@ -209,13 +217,13 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
           ) : (
             <div onClick={() => handleEdit(item)} className="row editFormRow">
               <hr />
-              <div className="col-sm-2">{item.itemName}</div>
-              <div className="col-sm-2">{item.itemDescription}</div>
-              <div className="col-sm-2">{item.itemPrice}</div>
-              <div className="col-sm-2">{item.stock}</div>
-              <div className="col-sm-2">{item.imagePath}</div>
+              <div className="col-2 overflow">{item.itemName}</div>
+              <div className="col-2 overflow">{item.itemDescription}</div>
+              <div className="col-2 overflow">{item.itemPrice}</div>
+              <div className="col-2 overflow">{item.stock}</div>
+              <div className="col-2 overflow">{item.imagePath}</div>
 
-              <div className="col-sm-2 "></div>
+              <div className="col-2 "></div>
             </div>
           )}
         </div>

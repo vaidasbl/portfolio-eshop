@@ -109,6 +109,7 @@ body {
 .shopnav-item {
   border-bottom: 1px solid rgb(36, 35, 35);
   padding-bottom: 20px;
+  max-width: 5vh;
   transition: border 1s ease;
 }
 
@@ -144,9 +145,6 @@ body {
   justify-content: flex-end;
 }
 
-.card-name {
-}
-
 .itemimg {
   width: 90%;
   height: 40vh;
@@ -177,6 +175,7 @@ body {
 .editForm {
   background-color: rgba(0, 0, 0, 0.651);
   height: 4vh;
+  width: 85%;
   color: white;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.514);
@@ -184,7 +183,9 @@ body {
 }
 
 .editFormRow {
-  height: 5em;
+  min-height: 10vh;
+  height: fit-content;
+
   text-align: center;
   padding-bottom: 1.5vh;
 }
@@ -261,7 +262,9 @@ body {
   border: 1px solid white;
   border-radius: 5px;
   color: white;
-  width: 15vh;
+  width: 75%;
+  max-width: 15vh;
+
   height: 4vh;
 }
 
@@ -289,7 +292,7 @@ button:disabled {
   border: white 1px solid;
   border-radius: 5px;
   color: white;
-  width: 50vh;
+  width: 250px;
   height: 5vh;
 }
 
@@ -366,31 +369,36 @@ button:disabled {
 
 .notification-passive {
   position: absolute;
-  right: 5vh;
   top: 10vh;
+  right: 2vh;
   opacity: 0;
   user-select: none;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.75s ease;
+  z-index: 1;
 }
 
 .notification-active {
   position: absolute;
-  right: 5vh;
   top: 10vh;
+  right: 2vh;
   user-select: none;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.75s ease;
   z-index: 1;
 }
 
-.notification {
-  font-size: 200px;
-  color: white;
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
-  left: 0;
-}
 .hide {
   opacity: 0;
   user-select: none;
+}
+
+.overflow {
+  overflow-y: hidden;
+}
+
+.me-minus {
+  margin-right: -1.5vh;
+}
+
+.ms-minus {
+  margin-left: -3vh;
 }

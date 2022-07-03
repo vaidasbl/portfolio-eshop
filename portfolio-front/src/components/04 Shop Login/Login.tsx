@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useState, useContext, FC, ChangeEvent, FormEvent } from "react";
+import React, { useState, FC, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../07 Common Components/UserContext";
+import { useDispatch } from "react-redux";
+import { login } from "../08 Reducers/user";
+import { alert } from "../08 Reducers/alert";
 
 const Login: FC = () => {
-  const context = useContext(UserContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState<string | null>("");
@@ -26,25 +28,23 @@ const Login: FC = () => {
       password: password,
     };
 
-    if (context !== null) {
-      const { dispatch, handleAlert } = context;
-      try {
-        const result = await axios.post(
-          "http://localhost:3001/api/shop/users/login",
-          loginJson
-        );
+    try {
+      const result = await axios.post(
+        "http://localhost:3001/api/shop/users/login",
+        loginJson
+      );
 
-        if (result.data.success) {
-          await dispatch({ type: "LOGIN", payload: result.data });
-          navigate("/eshop");
-          handleAlert("info", "Successfully logged in", 750);
-        } else {
-        }
-      } catch (err: any) {
-        handleAlert("error", err.response.data.reason, 1500);
+      if (result.data.success) {
+        console.log(result.data);
+        dispatch(login(result.data));
+        navigate("/eshop");
+        dispatch(
+          alert({ type: "success", text: "Successfully logged in", time: 1500 })
+        );
+      } else {
       }
-    } else {
-      alert("context is null");
+    } catch (err: any) {
+      console.log(err);
     }
   };
 

@@ -21,7 +21,6 @@ const ItemSearch: FC<Props> = ({ setItems }) => {
   const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
     const searchString = e.target.value;
     const regex = /^[a-zA-Zą-ž\s\d-]+$/;
-    console.log(e);
 
     try {
       if (searchString === "" || regex.test(searchString)) {
@@ -41,7 +40,7 @@ const ItemSearch: FC<Props> = ({ setItems }) => {
   };
 
   return (
-    <div className="">
+    <div>
       <input
         type="text"
         className="searchField inputBoxOutline"

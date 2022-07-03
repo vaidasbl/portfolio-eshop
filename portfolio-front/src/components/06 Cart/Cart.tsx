@@ -1,9 +1,7 @@
 import axios from "axios";
-import React from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
-import { useState } from "react";
-import UserContext from "../07 Common Components/UserContext";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { alert } from "../08 Reducers/alert";
 
 type CartItem = {
   itemId?: string;
@@ -15,49 +13,42 @@ type CartItem = {
 };
 
 function Cart() {
-  const context = useContext(UserContext);
-  const user = context?.user;
+  const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const user = useSelector((state: any) => state.user.value);
 
   const getCartItems = async () => {
-    if (context !== null) {
-      const { user } = context;
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/api/shop/carts/get/${user._id}`
-        );
-        setCartItems(response.data.items);
-      } catch (err) {
-        alert("ERROR");
-      }
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/shop/carts/get/${user._id}`
+      );
+      setCartItems(response.data.items);
+    } catch (err) {
+      alert("ERROR");
     }
   };
 
   const handleIncrement = async (i: CartItem) => {
-    if (context !== null) {
-      const { user } = context;
-      try {
-        await axios.put(
-          `http://localhost:3001/api/shop/items/${i.itemId}/addtouser/${user._id}`
-        );
-        getCartItems();
-      } catch (err) {
-        console.log(err);
-      }
+    try {
+      await axios.put(
+        `http://localhost:3001/api/shop/items/${i.itemId}/addtouser/${user._id}`
+      );
+      dispatch(alert({ type: "success", text: "Item added", time: 750 }));
+      getCartItems();
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const handleDecrement = async (i: CartItem) => {
-    if (context !== null) {
-      const { user } = context;
-      try {
-        await axios.put(
-          `http://localhost:3001/api/shop/items/${i.itemId}/removefromuser/${user._id}`
-        );
-        getCartItems();
-      } catch (err) {
-        console.log(err);
-      }
+    try {
+      await axios.put(
+        `http://localhost:3001/api/shop/items/${i.itemId}/removefromuser/${user._id}`
+      );
+      dispatch(alert({ type: "success", text: "Item removed", time: 750 }));
+      getCartItems();
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -67,16 +58,15 @@ function Cart() {
 
   return (
     <div className="black-container">
-      <div className="ouritems">{user?.username?.toUpperCase()} CART</div>
-      <div className="row">
-        <div className="col-sm-6 ">
+      <div className="ouritems">{user.username.toUpperCase()} CART</div>
+      <div className="row mt-4 ms-4 mb-4 ">
+        <div className="col-lg-6 col-md-8 col-12">
           {cartItems?.map((i) => (
-            <div key={i.itemId} className="row mt-4 ms-4 mb-4 ">
-              <div className="col-sm-3">{i.itemName}</div>
-              <div className="col-sm-3">x {i.quantity}</div>
-              <div className="col-sm-3">$ {i.itemPrice * i.quantity}</div>
-
-              <div className="col-sm-3">
+            <div key={i.itemId} className="row mt-4">
+              <div className="col-3">{i.itemName}</div>
+              <div className="col-3">x {i.quantity}</div>
+              <div className="col-3">$ {i.itemPrice * i.quantity}</div>
+              <div className="col-3">
                 <button
                   onClick={() => handleIncrement(i)}
                   className="myBtn3 me-2"
@@ -93,20 +83,20 @@ function Cart() {
           {cartItems.length > 0 ? (
             <div>
               <hr className="mt-2" />
-              <div className="ms-4">
-                <div className="row">
-                  <div className="col-sm-6 ">TOTAL</div>
-                  <div className="col-sm-3">
-                    ${" "}
-                    {cartItems.reduce(
-                      (initValue, item) =>
-                        initValue + item.itemPrice * item.quantity,
-                      0
-                    )}
-                  </div>
-                  <div className="col-sm-3">
-                    <button className="myBtn4">Checkout</button>
-                  </div>
+
+              <div className="row ">
+                <div className="col-3">TOTAL</div>
+                <div className="col-3"></div>
+                <div className="col-3">
+                  ${" "}
+                  {cartItems.reduce(
+                    (initValue, item) =>
+                      initValue + item.itemPrice * item.quantity,
+                    0
+                  )}
+                </div>
+                <div className="col-3">
+                  <button className="myBtn4">Checkout</button>
                 </div>
               </div>
             </div>

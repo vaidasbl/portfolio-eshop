@@ -1,26 +1,29 @@
-import React, { useContext } from "react";
+import React from "react";
 import Alert from "@mui/material/Alert";
-import UserContext from "../07 Common Components/UserContext";
+import { useSelector } from "react-redux";
+import { alertOff } from "../08 Reducers/alert";
+import { useDispatch } from "react-redux";
 
 const MyAlert = () => {
-  const context = useContext(UserContext);
+  const dispatch = useDispatch();
+  const alert = useSelector((state: any) => state.alert.value);
 
-  if (context !== null) {
-    const { alert } = context;
-    return (
-      <div
-        className={
-          alert.active ? "notification-active" : "notification-passive"
-        }
-      >
-        <Alert severity={alert.type} variant="outlined">
-          {alert.text}
-        </Alert>
-      </div>
+  if (alert.active) {
+    setTimeout(
+      () => dispatch(alertOff({ type: alert.type, text: alert.text })),
+      alert.time
     );
-  } else {
-    return <div>CONTEXT IS NULL</div>;
   }
+
+  return (
+    <div
+      className={alert.active ? "notification-active" : "notification-passive"}
+    >
+      <Alert severity={alert.type} variant="outlined">
+        {alert.text}
+      </Alert>
+    </div>
+  );
 };
 
 export default MyAlert;

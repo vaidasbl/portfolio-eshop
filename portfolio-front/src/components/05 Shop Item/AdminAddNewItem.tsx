@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState, FC, ChangeEvent } from "react";
+import React, { useEffect, useState, FC, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../07 Common Components/UserContext";
+import { useDispatch } from "react-redux";
+import { alert } from "../08 Reducers/alert";
 
 type Item = {
   _id?: string;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
-  const context = useContext(UserContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [itemData, setItemData] = useState<Item>({
@@ -79,22 +80,20 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
   };
 
   const handleSave = async () => {
-    if (context !== null) {
-      const { handleAlert } = context;
-
-      try {
-        await axios.post("http://localhost:3001/api/shop/items", itemData);
-
-        await fetchItems();
-        handleAlert("success", "Successfully added new item", 1500);
-        navigate("/eshop/admin");
-      } catch (err) {
-        if (err instanceof Error) {
-          handleAlert("error", err.message, 5000);
-        } else {
-          alert("caught but not instanceof error");
-        }
-      }
+    try {
+      await axios.post("http://localhost:3001/api/shop/items", itemData);
+      await fetchItems();
+      dispatch(
+        alert({
+          type: "success",
+          text: "Successfully added the item",
+          time: 1500,
+        })
+      );
+      navigate("/eshop/admin");
+    } catch (err: any) {
+      dispatch(alert({ type: "error", text: err.message, time: 3000 }));
+      console.log(err.message);
     }
   };
 
@@ -200,22 +199,21 @@ const AdminAddNewItem: FC<Props> = ({ fetchItems }) => {
           />
         </div>
 
-        <div className="row pt-4  justify-between">
-          <div className="col-sm-4  justify-start">
+        <div className="row pt-4  ">
+          <div className="col-4 ">
             <button
-              data-testid="savebtn"
               onClick={handleSave}
-              className="myBtn2"
+              className="myBtn2 myBtn2 ms-minus"
               disabled={saveDisabled}
             >
               Save
             </button>
           </div>
-          <div className="col-sm-6  justify-end">
+          <div className="col-8 flex-end">
             <button onClick={handleClear} className="myBtn2 me-2">
               Clear
             </button>
-            <button onClick={() => navigate(-1)} className="myBtn2">
+            <button onClick={() => navigate(-1)} className="myBtn2 me-minus">
               Go back
             </button>
           </div>
