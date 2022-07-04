@@ -16,9 +16,10 @@ import Cart from "./components/06 Cart/Cart";
 import Login from "./components/04 Shop Login/Login";
 import ShopNav from "./components/03 Shop Nav/ShopNav";
 import AnonNav from "./components/03 Shop Nav/AnonNav";
-import MyAlert from "./components/07 Common Components/MyAlert";
 
 import { useSelector } from "react-redux";
+import HomeHome from "./components/01 Home/HomeHome";
+import LayoutWithNav from "./components/03 Shop Nav/LayoutWithNav";
 
 type Item = {
   _id: string;
@@ -45,8 +46,8 @@ function App() {
         return (
           <Router>
             <ShopNav />
-
             <Routes>
+              <Route path="/" element={<HomeHome />} />
               <Route path="/eshop" element={<ShopHome />} />
               <Route
                 path="/eshop/items"
@@ -76,6 +77,7 @@ function App() {
                 path="/eshop/admin/addform"
                 element={<AdminAddNewItem fetchItems={fetchItems} />}
               />
+              <Route path="*" element={<Navigate to="/eshop" replace />} />
             </Routes>
           </Router>
         );
@@ -85,6 +87,7 @@ function App() {
             <ShopNav />
 
             <Routes>
+              <Route path="/" element={<HomeHome />} />
               <Route path="/eshop" element={<ShopHome />} />
               <Route
                 path="/eshop/items"
@@ -101,6 +104,7 @@ function App() {
                 element={<ItemDetails items={items} fetchItems={fetchItems} />}
               />
               <Route path="/eshop/cart" element={<Cart />} />
+              <Route path="*" element={<Navigate to="/eshop" replace />} />
             </Routes>
           </Router>
         );
@@ -110,10 +114,13 @@ function App() {
   } else {
     return (
       <Router>
-        <AnonNav />
         <Routes>
-          <Route path="/eshop" element={<ShopHome />} />
-          <Route path="/eshop/login" element={<Login />} />
+          <Route path="/" element={<HomeHome />} />
+          <Route element={<LayoutWithNav />}>
+            <Route path="/eshop" element={<ShopHome />} />
+            <Route path="/eshop/login" element={<Login />} />
+          </Route>
+
           <Route path="*" element={<Navigate to="/eshop/login" replace />} />
         </Routes>
       </Router>

@@ -76,7 +76,7 @@ const Login: FC = () => {
           </div>
 
           <div className="mt-3">
-            <button type="submit" className="myBtn3">
+            <button type="submit" className="myBtn4">
               Login
             </button>
           </div>

@@ -41,92 +41,95 @@ export default function ShopNav() {
 
   // (e: React.MouseEvent<HTMLElement>) => {
   // id = (e.target as HTMLInputElement).id;
-
-  return (
-    <div className="shopheader sticky">
-      <div className="row m-0 shopnav">
-        <div className="col-6">
-          <div className="row">
-            <div
-              className={
-                active.home
-                  ? "col-3 col-lg-2 shopnav-item-active "
-                  : "col-3 col-lg-2 shopnav-item"
-              }
-              id="shopnavhome"
-              onClick={() => navigate("/eshop")}
-            >
-              HOME
-            </div>
-            <div
-              className={
-                active.items
-                  ? "col-3 col-lg-2 shopnav-item-active "
-                  : "col-3 col-lg-2 shopnav-item"
-              }
-              id="shopnavitems"
-              onClick={() => navigate("/eshop/items")}
-            >
-              ITEMS
-            </div>
-            {user.role === "ADMIN" ? (
+  if (location !== "/") {
+    return (
+      <div className="shopheader sticky">
+        <div className="row m-0 shopnav">
+          <div className="col-6">
+            <div className="row">
               <div
                 className={
-                  active.admin
+                  active.home
                     ? "col-3 col-lg-2 shopnav-item-active "
                     : "col-3 col-lg-2 shopnav-item"
                 }
-                id="shopnavadmin"
-                onClick={() => navigate("/eshop/admin")}
+                id="shopnavhome"
+                onClick={() => navigate("/eshop")}
               >
-                ADMIN
+                HOME
               </div>
-            ) : (
               <div
                 className={
-                  active.cart
+                  active.items
                     ? "col-3 col-lg-2 shopnav-item-active "
                     : "col-3 col-lg-2 shopnav-item"
                 }
-                id="shopnavcart"
-                onClick={() => navigate("/eshop/cart")}
+                id="shopnavitems"
+                onClick={() => navigate("/eshop/items")}
               >
-                CART
+                ITEMS
               </div>
-            )}
+              {user.role === "ADMIN" ? (
+                <div
+                  className={
+                    active.admin
+                      ? "col-3 col-lg-2 shopnav-item-active "
+                      : "col-3 col-lg-2 shopnav-item"
+                  }
+                  id="shopnavadmin"
+                  onClick={() => navigate("/eshop/admin")}
+                >
+                  ADMIN
+                </div>
+              ) : (
+                <div
+                  className={
+                    active.cart
+                      ? "col-3 col-lg-2 shopnav-item-active "
+                      : "col-3 col-lg-2 shopnav-item"
+                  }
+                  id="shopnavcart"
+                  onClick={() => navigate("/eshop/cart")}
+                >
+                  CART
+                </div>
+              )}
+            </div>
           </div>
+
+          {user.isAuthenticated === false ? (
+            <div className="col-sm-6 ">
+              <div className="row flex-end">
+                <div className="col-sm-3 "></div>
+                <div
+                  onClick={() => navigate("/eshop/login")}
+                  className={
+                    active.login
+                      ? "col-6 col-lg-3 shopnav-item-active "
+                      : "col-6 col-lg-3 shopnav-item"
+                  }
+                >
+                  Login
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="col-6 col-lg-3 ">
+              <div className="row flex-end">
+                <div className="col-8 pointercursor highlight ">
+                  Logged in as: {user.username}
+                </div>
+                <div onClick={handleLogout} className="col-4 shopnav-item ">
+                  Logout
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-
-        {user.isAuthenticated === false ? (
-          <div className="col-sm-6 ">
-            <div className="row flex-end">
-              <div className="col-sm-3 "></div>
-              <div
-                onClick={() => navigate("/eshop/login")}
-                className={
-                  active.login
-                    ? "col-6 col-lg-3 shopnav-item-active "
-                    : "col-6 col-lg-3 shopnav-item"
-                }
-              >
-                Login
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="col-6 col-lg-3 ">
-            <div className="row flex-end">
-              <div className="col-8 pointercursor highlight ">
-                Logged in as: {user.username}
-              </div>
-              <div onClick={handleLogout} className="col-4 shopnav-item ">
-                Logout
-              </div>
-            </div>
-          </div>
-        )}
+        <MyAlert />
       </div>
-      <MyAlert />
-    </div>
-  );
+    );
+  } else {
+    return <></>;
+  }
 }

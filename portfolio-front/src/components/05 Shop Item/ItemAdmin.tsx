@@ -145,7 +145,7 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
       {items.map((item) => (
         <div key={item._id}>
           {edit.inEditMode && edit.editRowId === item._id ? (
-            <div className="row  editFormRow">
+            <div className="row editFormRow rowborder mt-4">
               <hr />
               <div className="col-sm-2 col-md-2">
                 <input
@@ -215,7 +215,10 @@ const ItemAdmin: FC<Props> = ({ items, setItems, fetchItems }) => {
               </div>
             </div>
           ) : (
-            <div onClick={() => handleEdit(item)} className="row editFormRow">
+            <div
+              onClick={() => handleEdit(item)}
+              className="row rowborder editFormRow mt-4"
+            >
               <hr />
               <div className="col-2 overflow">{item.itemName}</div>
               <div className="col-2 overflow">{item.itemDescription}</div>

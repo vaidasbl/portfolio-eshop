@@ -11,7 +11,7 @@ type Navbar = {
   admin: boolean;
 };
 
-export default function ShopNav() {
+export default function AnonNav() {
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
@@ -27,38 +27,42 @@ export default function ShopNav() {
     SetBorder(location, active, setActive);
   }, [location]);
 
-  return (
-    <div className="shopheader sticky">
-      <div className="row shopnav">
-        <div className="col-4">
-          <div className="row">
-            <div
-              className={
-                active.home
-                  ? "col-6 col-lg-3 shopnav-item-active "
-                  : "col-6 col-lg-3 shopnav-item"
-              }
-              id="shopnavhome"
-              onClick={() => navigate("/eshop")}
-            >
-              HOME
-            </div>
+  if (location !== "/") {
+    return (
+      <div className="shopheader sticky">
+        <div className="row shopnav">
+          <div className="col-4">
+            <div className="row">
+              <div
+                className={
+                  active.home
+                    ? "col-6 col-lg-3 shopnav-item-active "
+                    : "col-6 col-lg-3 shopnav-item"
+                }
+                id="shopnavhome"
+                onClick={() => navigate("/eshop")}
+              >
+                HOME
+              </div>
 
-            <div
-              className={
-                active.login
-                  ? "col-6 col-lg-3 shopnav-item-active "
-                  : "col-6 col-lg-3 shopnav-item"
-              }
-              id="shopnavlogin"
-              onClick={() => navigate("/eshop/login")}
-            >
-              LOGIN
+              <div
+                className={
+                  active.login
+                    ? "col-6 col-lg-3 shopnav-item-active "
+                    : "col-6 col-lg-3 shopnav-item"
+                }
+                id="shopnavlogin"
+                onClick={() => navigate("/eshop/login")}
+              >
+                LOGIN
+              </div>
             </div>
           </div>
         </div>
+        <MyAlert />
       </div>
-      <MyAlert />
-    </div>
-  );
+    );
+  } else {
+    return <></>;
+  }
 }
