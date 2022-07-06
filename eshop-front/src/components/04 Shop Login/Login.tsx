@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useState, FC, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../08 Reducers/user";
-import { alert } from "../08 Reducers/alert";
+import { login } from "../../Reducers/user";
+import { alert } from "../../Reducers/alert";
 
 const Login: FC = () => {
   const dispatch = useDispatch();
@@ -35,7 +35,6 @@ const Login: FC = () => {
       );
 
       if (result.data.success) {
-        console.log(result.data);
         dispatch(login(result.data));
         navigate("/eshop");
         dispatch(

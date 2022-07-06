@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ItemCard from "../05 Shop Item/ItemCard";
+import ItemCard from "./ItemCard";
 import ItemSearch from "../07 Common Components/ItemSearch";
 
 type Item = {

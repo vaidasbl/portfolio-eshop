@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ItemSearch from "../07 Common Components/ItemSearch";
 import { useDispatch } from "react-redux";
-import { alert } from "../08 Reducers/alert";
+import { alert } from "../../Reducers/alert";
 
 type Item = {
   _id: string;

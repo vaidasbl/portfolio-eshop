@@ -1,7 +1,7 @@
 import React from "react";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
-import { alertOff } from "../08 Reducers/alert";
+import { alertOff } from "../../Reducers/alert";
 import { useDispatch } from "react-redux";
 
 const MyAlert = () => {

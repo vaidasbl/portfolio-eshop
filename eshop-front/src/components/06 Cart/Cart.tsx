@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { alert } from "../08 Reducers/alert";
+import { alert } from "../../Reducers/alert";
 
 type CartItem = {
   itemId?: string;

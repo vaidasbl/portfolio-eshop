@@ -2,9 +2,9 @@ import axios from "axios";
 import React from "react";
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ItemCard from "../05 Shop Item/ItemCard";
+import ItemCard from "./ItemCard";
 import { useSelector, useDispatch } from "react-redux";
-import { alert } from "../08 Reducers/alert";
+import { alert } from "../../Reducers/alert";
 
 type Item = {
   _id: string;

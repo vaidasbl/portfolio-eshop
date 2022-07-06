@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import AnonNav from "./AnonNav";
 
-const LayoutWithNav = () => {
+const LayoutWithAnonNav = () => {
   return (
     <div>
       <AnonNav />
@@ -11,4 +11,4 @@ const LayoutWithNav = () => {
   );
 };
 
-export default LayoutWithNav;
+export default LayoutWithAnonNav;

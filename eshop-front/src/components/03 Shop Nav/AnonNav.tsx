@@ -27,7 +27,7 @@ export default function AnonNav() {
     SetBorder(location, active, setActive);
   }, [location]);
 
-  if (location !== "/") {
+  if (location !== "/eshop/*") {
     return (
       <div className="shopheader sticky">
         <div className="row shopnav">

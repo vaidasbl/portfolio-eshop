@@ -7,11 +7,13 @@ const itemRouter = require("./Item/ItemRouter");
 const cartItemRouter = require("./CartItem/CartItemRouter");
 const cartRouter = require("./Cart/CartRouter");
 const userRouter = require("./User/UserRouter");
+const themeRouter = require("./theme/ThemeRouter");
 
 app.use("/api/shop/items", itemRouter);
 app.use("/api/shop/cartitems", cartItemRouter);
 app.use("/api/shop/carts", cartRouter);
 app.use("/api/shop/users", userRouter);
+app.use("/api/shop/themes", themeRouter);
 
 app.use(express.json());
 
